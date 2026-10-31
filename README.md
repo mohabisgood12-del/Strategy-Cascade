@@ -50,18 +50,14 @@ Every tool recalculates as you type, exports the result to CSV, copies to the cl
 ## Repository layout
 
 ```
-index.html            the whole app, self-contained
-StrategyCascade.exe   Windows launcher with index.html embedded
-lab/                  readable source of the Analysis Lab and its tests
-  build.ps1           re-injects lab/*.js into index.html
-  smoke.mjs           headless Chrome smoke test
-  ux.mjs              interaction, quality and regression suite
-  shot.mjs            screenshot capture
-desktop/              launcher source and icon
-  Program.cs
-  make-icon.ps1
-  app.ico
+index.html                the whole app, self-contained
+StrategyCascade.exe       Windows launcher with index.html embedded
+Strategy-Cascade-1.1.zip  both files, this README and the two source folders below
+lab/                      (inside the ZIP) source of the Analysis Lab and its tests
+desktop/                  (inside the ZIP) launcher source and icon
 ```
+
+Unpack `Strategy-Cascade-1.1.zip` to rebuild: the commands in the next section expect `lab/` and `desktop/` next to `index.html`.
 
 ## Rebuilding
 
