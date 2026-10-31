@@ -8564,7 +8564,7 @@ function attention(){const out=[],t=todayISO();
 /* ---------- routing ---------- */
 let route={v:'home'},exportScope='all';
 function parse(h){h=(h||'').replace(/^#/,'');let m;
- if(!h||h==='home')return {v:'home'};if(h==='domains')return {v:'dom'};if(h==='outputs')return {v:'out'};if(h==='versions')return {v:'ver'};if(h==='sources')return {v:'src'};if(h==='software')return {v:'sw'};if(h==='review')return {v:'rv'};if(h==='budget')return {v:'bg'};if(h==='toolkit')return {v:'fk'};
+ if(!h||h==='home')return {v:'home'};if(h==='lab')return {v:'lab'};if(h==='domains')return {v:'dom'};if(h==='outputs')return {v:'out'};if(h==='versions')return {v:'ver'};if(h==='sources')return {v:'src'};if(h==='software')return {v:'sw'};if(h==='review')return {v:'rv'};if(h==='budget')return {v:'bg'};if(h==='toolkit')return {v:'fk'};
  if(m=h.match(/^(L(?:[1-9]|[1-7][0-9]|80))(?:\.(dash|out))?$/))return {v:'level',id:m[1],tab:m[2]||'list'};
  if(/^L(?:[1-9]|[1-7][0-9]|80)-\d\d$/.test(h)&&BYID[h])return {v:'comp',id:h};
  return {v:'home'};}
@@ -8576,7 +8576,7 @@ window.addEventListener('hashchange',()=>{const hh=(location.hash||'').replace(/
 function renderSide(){
  const q=($('#q').value||'').trim().toLowerCase(),r=route;
  const curLv=r.v==='level'||r.v==='comp'?(r.id.split('-')[0]):null;
- let h=`<div class="navtop"><a class="nl${r.v==='home'?' on':''}" href="#home" data-go="home">Overview</a><a class="nl${r.v==='dom'?' on':''}" href="#domains" data-go="domains">Domains</a><a class="nl${r.v==='out'?' on':''}" href="#outputs" data-go="outputs">Output center</a><a class="nl${r.v==='ver'?' on':''}" href="#versions" data-go="versions">Versions</a><a class="nl${r.v==='src'?' on':''}" href="#sources" data-go="sources">Data sources</a><a class="nl${r.v==='fk'?' on':''}" href="#toolkit" data-go="toolkit">Finance toolkit</a><a class="nl${r.v==='bg'?' on':''}" href="#budget" data-go="budget">Campaign budget</a><a class="nl${r.v==='sw'?' on':''}" href="#software" data-go="software">Software options</a><a class="nl${r.v==='rv'?' on':''}" href="#review" data-go="review">Review and print</a></div>`;
+ let h=`<div class="navtop"><a class="nl${r.v==='home'?' on':''}" href="#home" data-go="home">Overview</a><a class="nl${r.v==='dom'?' on':''}" href="#domains" data-go="domains">Domains</a><a class="nl${r.v==='out'?' on':''}" href="#outputs" data-go="outputs">Output center</a><a class="nl${r.v==='lab'?' on':''}" href="#lab" data-go="lab">Analysis Lab</a><a class="nl${r.v==='ver'?' on':''}" href="#versions" data-go="versions">Versions</a><a class="nl${r.v==='src'?' on':''}" href="#sources" data-go="sources">Data sources</a><a class="nl${r.v==='fk'?' on':''}" href="#toolkit" data-go="toolkit">Finance toolkit</a><a class="nl${r.v==='bg'?' on':''}" href="#budget" data-go="budget">Campaign budget</a><a class="nl${r.v==='sw'?' on':''}" href="#software" data-go="software">Software options</a><a class="nl${r.v==='rv'?' on':''}" href="#review" data-go="review">Review and print</a></div>`;
  LV.forEach(l=>{
   const list=l.comps.filter(c=>!q||(c.title+' '+c.id).toLowerCase().includes(q));
   if(q&&!list.length)return;
@@ -8761,7 +8761,7 @@ function vOut(){
 function render(){
  renderSide();
  const r=route,m=$('#main');let h='';
- if(r.v==='home')h=vHome();else if(r.v==='dom')h=vDomains();else if(r.v==='out')h=vOut();else if(r.v==='level')h=vLevel(LVBY[r.id],r.tab);else if(r.v==='ver')h=vVersions();else if(r.v==='src')h=vSources();else if(r.v==='sw')h=vSoftware();else if(r.v==='rv')h=vReview();else if(r.v==='bg')h=vBudget();else if(r.v==='fk')h=vFinKit();else h=vComp(r.id);
+ if(r.v==='home')h=vHome();else if(r.v==='dom')h=vDomains();else if(r.v==='out')h=vOut();else if(r.v==='level')h=vLevel(LVBY[r.id],r.tab);else if(r.v==='ver')h=vVersions();else if(r.v==='src')h=vSources();else if(r.v==='sw')h=vSoftware();else if(r.v==='rv')h=vReview();else if(r.v==='bg')h=vBudget();else if(r.v==='fk')h=vFinKit();else if(r.v==='lab')h=(typeof vLab==='function'?vLab():'');else h=vComp(r.id);
  if(route.v!=='home'||hist.length)h=`<button class="btn backbtn" data-act="back" type="button" aria-label="Go back">← Back</button>`+h;
  m.innerHTML=h;if(r.v==='bg')bgRefresh();$$('textarea.auto',m).forEach(grow);
  $('#coLabel').textContent=S.meta.company||'';
@@ -10474,7 +10474,11 @@ function docModelWhite(scope,o){
  return B;}
 const rvModel=()=>rvO.ed==='white'?docModelWhite(rvO.scope,rvO):docModelReview(rvO.scope,rvO);
 
-window.__narr=narrative;window.__app={S,getC,BYID,ALLC,LVBY,counts,fmtDate,todayISO,lvProg,completeness,ST,wsStats,get route(){return route},DOMOF,DOMAINS};window.__lvsIn=lvsIn;
+window.__narr=narrative;window.__app={S,getC,getW,W,BYID,ALLC,LV,LVBY,counts,fmtDate,todayISO,lvProg,completeness,ST,wsStats,get route(){return route},DOMOF,DOMAINS,render,touch,toast,go,saveFile,esc,slug,clone,LSK,
+ setField(id,k,v){const d=getC(id);d[k]=v;touch('c:'+id);return d},
+ setStatus(id,s){const d=getC(id);d.st=s;if(s===3&&!d.ad)d.ad=todayISO();touch('c:'+id);return d},
+ addKpi(id,k){const d=getC(id);d.kp.push(k);touch('c:'+id);return d},
+ save(){lsSave()}};window.__lvsIn=lvsIn;
 /* ---------- start ---------- */
 try{const th=localStorage.getItem('sc-theme');if(th)document.documentElement.dataset.theme=th;}catch(e){}
 const saved=lsLoad();
@@ -10997,5 +11001,1584 @@ D.addEventListener('click',e=>{const b=e.target.closest?e.target.closest('[data-
 })();
 </script>
 
+
+
+
+
+
+
+
+
+
+<script>/* Strategy Cascade Lab - 72 working analysis tools, command palette and app polish */
+/* Strategy Cascade Lab - core: registry, UI, command palette, app polish */
+(() => {
+'use strict';
+const D = document;
+const $ = (s, r) => (r || D).querySelector(s);
+const $$ = (s, r) => [...(r || D).querySelectorAll(s)];
+const A = () => window.__app;
+const E = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const N = x => { const m = String(x == null ? '' : x).replace(/,/g, '').match(/-?\d+(?:\.\d+)?/); return m ? parseFloat(m[0]) : 0; };
+const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
+const num = (x, d) => { const n = Number(x); return isFinite(n) ? n.toLocaleString(undefined, { minimumFractionDigits: d || 0, maximumFractionDigits: d || 0 }) : 'n/a'; };
+const pct = (x, d) => isFinite(Number(x)) ? num(x, d == null ? 1 : d) + '%' : 'n/a';
+const rows = t => String(t || '').split('\n').map(l => l.trim()).filter(Boolean).map(l => l.split('|').map(x => x.trim()));
+const today = () => { const a = A(); return a ? a.todayISO() : new Date().toISOString().slice(0, 10); };
+const days = d => { const t = Date.parse(d); return isFinite(t) ? Math.ceil((t - Date.parse(today())) / 864e5) : null; };
+const col = (v, good, warn) => v >= good ? '#2e9d62' : v >= warn ? '#d9922b' : '#c9473d';
+const tbl = (head, rs, foot) => '<div class="labtbl"><table><thead><tr>' + head.map(h => '<th>' + h + '</th>').join('') + '</tr></thead><tbody>' + rs.map(r => '<tr>' + r.map(c => '<td>' + c + '</td>').join('') + '</tr>').join('') + '</tbody>' + (foot ? '<tfoot><tr>' + foot.map(c => '<td>' + c + '</td>').join('') + '</tr></tfoot>' : '') + '</table></div>';
+const kpi = arr => '<div class="labkpi">' + arr.map(x => '<div><b>' + x[1] + '</b><span>' + E(x[0]) + '</span></div>').join('') + '</div>';
+const bar = (p, c) => '<span class="labbar"><i style="width:' + clamp(Number(p) || 0, 0, 100) + '%' + (c ? ';background:' + c : '') + '"></i></span>';
+const note = t => '<p class="labnote">' + t + '</p>';
+const svg = (w, h, inner) => '<svg viewBox="0 0 ' + w + ' ' + h + '" class="labsvg" role="img">' + inner + '</svg>';
+const ax = (x1, y1, x2, y2) => '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="var(--line2)" stroke-width="1"/>';
+const tx = (x, y, t, a) => '<text x="' + x + '" y="' + y + '" font-size="9" fill="var(--muted)" text-anchor="' + (a || 'middle') + '">' + E(String(t).slice(0, 28)) + '</text>';
+
+const T = window.__lab = {
+  T: {}, order: [],
+  add(cat, id, name, desc, fields, run, extra) {
+    if (this.T[id]) return;
+    this.T[id] = { id, cat, n: name, d: desc, f: fields || [], r: run, pre: extra && extra.pre, push: extra && extra.push, note: extra && extra.note };
+    this.order.push(id);
+  },
+  E, N, num, pct, rows, tbl, kpi, bar, note, svg, ax, tx, clamp, col, today, days,
+  state: () => { try { return JSON.parse(localStorage.getItem('sc-lab-state') || '{}'); } catch (e) { return {}; } },
+  save(o) { try { localStorage.setItem('sc-lab-state', JSON.stringify(o)); } catch (e) {} },
+  favs: () => { try { return JSON.parse(localStorage.getItem('sc-lab-favs') || '[]'); } catch (e) { return []; } },
+  recent: () => { try { return JSON.parse(localStorage.getItem('sc-lab-recent') || '[]'); } catch (e) { return []; } }
+};
+const CATS = window.__lab.CATS = ['Favourites', 'Recent', 'Finance and valuation', 'Pricing and revenue', 'Marketing and growth', 'Risk and governance', 'Operations and supply', 'People and organisation', 'Data and technology', 'Strategy and portfolio', 'ESG and impact', 'Planning and delivery'];
+
+/* ---------- generic field + result rendering ---------- */
+function fieldHTML(f, v) {
+  const val = v == null ? (f.d == null ? '' : f.d) : v;
+  const lab = '<span>' + E(f.l) + '</span>';
+  if (f.t === 't') return '<label class="lf">' + lab + '<textarea data-f="' + f.k + '" rows="' + (f.r || 4) + '">' + E(val) + '</textarea></label>';
+  if (f.t === 's') return '<label class="lf">' + lab + '<select data-f="' + f.k + '">' + (f.o || []).map(o => '<option' + (String(o) === String(val) ? ' selected' : '') + '>' + E(o) + '</option>').join('') + '</select></label>';
+  if (f.t === 'c') return '<label class="lf lfc"><input type="checkbox" data-f="' + f.k + '"' + (val ? ' checked' : '') + '>' + E(f.l) + '</label>';
+  return '<label class="lf">' + lab + '<input data-f="' + f.k + '" value="' + E(val) + '" inputmode="decimal"></label>';
+}
+function readFields(root) {
+  const v = {};
+  $$('[data-f]', root).forEach(el => { v[el.dataset.f] = el.type === 'checkbox' ? el.checked : el.value; });
+  return v;
+}
+function resultHTML(tool, v) {
+  try { return tool.r(v) || ''; } catch (e) { return note('Could not compute with these values: ' + E(e.message)); }
+}
+function tableCSV(html) {
+  const d = D.createElement('div'); d.innerHTML = html;
+  const t = d.querySelector('table');
+  if (!t) return [[(d.textContent || '').trim().replace(/\s+/g, ' ')]];
+  return [...t.querySelectorAll('tr')].map(tr => [...tr.children].map(td => (td.textContent || '').trim()));
+}
+function download(name, text) {
+  const u = URL.createObjectURL(new Blob([text], { type: 'text/csv;charset=utf-8' }));
+  const l = D.createElement('a'); l.href = u; l.download = name; l.click();
+  setTimeout(() => URL.revokeObjectURL(u), 2000);
+}
+function printHTML(title, html) {
+  const f = D.createElement('iframe');
+  f.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0;';
+  D.body.appendChild(f);
+  const doc = f.contentDocument;
+  doc.open();
+  doc.write('<!doctype html><html><head><meta charset="utf-8"><title>' + E(title) + '</title><style>body{font:13px/1.5 system-ui,sans-serif;padding:22px;color:#111}h1{font-size:20px}table{width:100%;border-collapse:collapse;margin:10px 0}th,td{padding:6px 8px;border-bottom:1px solid #ddd;text-align:left;vertical-align:top}th{background:#f3f4f6;font-size:11px;text-transform:uppercase;letter-spacing:.06em}.labkpi{display:flex;gap:10px;flex-wrap:wrap}.labkpi>div{border:1px solid #ddd;border-radius:8px;padding:8px 10px}.labbar{display:none}svg{max-width:100%}</style></head><body><h1>' + E(title) + '</h1>' + html + '</body></html>');
+  doc.close();
+  setTimeout(() => { try { f.contentWindow.focus(); f.contentWindow.print(); } catch (e) {} setTimeout(() => f.remove(), 1500); }, 250);
+}
+
+/* ---------- Lab modal ---------- */
+let cur = null, query = '';
+function openLab(id) {
+  const m = $('#labm'); if (m) m.remove();
+  const d = D.createElement('div');
+  d.id = 'labm'; d.className = 'pro-modal';
+  d.innerHTML = '<div class="pro-box wide labbox"><button class="pro-x" aria-label="Close">x</button>' +
+    '<div class="labhead"><div><span class="eyebrow">Strategy Cascade Lab</span><h2>Analysis tools</h2></div><input id="labq" type="search" placeholder="Search ' + T.order.length + ' tools" aria-label="Search tools"></div>' +
+    '<div class="labwrap"><aside class="labside"><div id="labnav"></div></aside><section class="labmain" id="labmain"></section></div></div>';
+  D.body.appendChild(d);
+  requestAnimationFrame(() => d.classList.add('on'));
+  const q = $('#labq', d);
+  /* one delegated handler for the whole panel: re-rendering must not stack listeners */
+  d.addEventListener('click', e => {
+    if (e.target === d || e.target.closest('.pro-x')) { d.remove(); return; }
+    const navBtn = e.target.closest('[data-tool]');
+    if (navBtn) { cur = navBtn.dataset.tool; drawNav(); drawMain(); return; }
+    const fv = e.target.closest('#labfav');
+    if (fv) { toggleFav(fv); return; }
+    const act = e.target.closest('[data-lab]');
+    if (act) labAction(act.dataset.lab, act);
+  });
+  d.addEventListener('input', e => {
+    if (e.target.id === 'labq') { query = e.target.value; drawNav(); }
+    else if (e.target.closest('[data-f]')) runTool();
+  });
+  d.addEventListener('change', e => {
+    if (e.target.id === 'labpush') pushTarget = e.target.value;
+  });
+  cur = id && T.T[id] ? id : (T.recent()[0] || T.order[0]);
+  drawNav(); drawMain();
+  setTimeout(() => q.focus(), 60);
+}
+function drawNav() {
+  const nav = $('#labnav'); if (!nav) return;
+  const q = query.trim().toLowerCase();
+  const favs = T.favs(), rec = T.recent();
+  const seen = new Set();
+  let h = '';
+  CATS.forEach(cat => {
+    let ids;
+    if (cat === 'Favourites') ids = favs.filter(id => T.T[id]);
+    else if (cat === 'Recent') ids = rec.filter(id => T.T[id]).slice(0, 6);
+    else ids = T.order.filter(id => T.T[id].cat === cat);
+    if (q) {
+      ids = ids.filter(id => (T.T[id].n + ' ' + T.T[id].d + ' ' + T.T[id].cat).toLowerCase().includes(q));
+      /* a search should list each tool once, not again under Favourites and Recent */
+      ids = ids.filter(id => { if (seen.has(id)) return false; seen.add(id); return true; });
+    }
+    if (!ids.length) return;
+    h += '<div class="labcat">' + E(cat) + '</div>';
+    h += ids.map(id => '<button class="labitem' + (id === cur ? ' on' : '') + '" data-tool="' + id + '">' + (favs.includes(id) ? '<i class="labstar">*</i>' : '') + E(T.T[id].n) + '</button>').join('');
+  });
+  if (!h) h = '<p class="muted" style="font-size:13px">No tool matches that search.</p>';
+  nav.innerHTML = h;
+}
+function drawMain() {
+  const box = $('#labmain'), tool = T.T[cur]; if (!box || !tool) return;
+  const st = T.state()[cur] || {};
+  const fav = T.favs().includes(cur);
+  box.innerHTML = '<div class="labtitle"><div><h3>' + E(tool.n) + '</h3><p class="muted">' + E(tool.d) + '</p></div><button class="chip labfav' + (fav ? ' on' : '') + '" id="labfav" data-on="' + (fav ? '1' : '') + '" title="Add to favourites">' + (fav ? 'Saved' : 'Save') + '</button></div>' +
+    '<div class="labfields">' + tool.f.map(f => fieldHTML(f, st[f.k])).join('') + '</div>' +
+    (tool.pre ? '<div class="labacts"><button class="btn sm" data-lab="pre">Load from my plan</button><span class="muted" id="labprem" style="font-size:12px;align-self:center">Fills this tool with data already in the workspace.</span></div>' : '') +
+    '<div id="labout"></div>' +
+    (tool.push ? T.compSelect() : '') +
+    '<div class="labacts"><button class="btn sm" data-lab="csv">Export CSV</button><button class="btn sm" data-lab="copy">Copy result</button><button class="btn sm" data-lab="print">Print</button><button class="btn sm" data-lab="reset">Reset inputs</button>' + (tool.push ? '<button class="btn sm pri" data-lab="push">Send to plan</button>' : '') + '</div>' +
+    (tool.note ? note(tool.note) : '');
+  runTool();
+  const rec = T.recent().filter(x => x !== cur); rec.unshift(cur);
+  try { localStorage.setItem('sc-lab-recent', JSON.stringify(rec.slice(0, 12))); } catch (e) {}
+}
+function labAction(k, btn) {
+  const tool = T.T[cur], box = $('#labmain'), out = $('#labout');
+  if (!tool || !box || !out) return;
+  if (k === 'csv') {
+    const name = cur + '-result.csv';
+    download(name, tableCSV(out.innerHTML).map(r => r.map(c => '"' + String(c).replace(/"/g, '""') + '"').join(',')).join('\r\n'));
+  } else if (k === 'copy') {
+    const txt = (out.textContent || '').trim();
+    if (navigator.clipboard) navigator.clipboard.writeText(txt).then(() => {
+      if (!btn) return;
+      btn.textContent = 'Copied';
+      setTimeout(() => { btn.textContent = 'Copy result'; }, 1200);
+    }).catch(() => {});
+  } else if (k === 'print') {
+    printHTML(tool.n, out.innerHTML);
+  } else if (k === 'reset') {
+    const s = T.state(); delete s[cur]; T.save(s); drawMain();
+  } else if (k === 'pre') {
+    const p = tool.pre && tool.pre();
+    if (!p) { const msg = $('#labprem'); if (msg) msg.textContent = 'Nothing to load yet: this data is not in the workspace.'; return; }
+    const s = T.state(); s[cur] = Object.assign({}, s[cur], p); T.save(s); drawMain();
+    const msg = $('#labprem'); if (msg) msg.textContent = 'Loaded from the workspace.';
+  } else if (k === 'push' && tool.push) {
+    const sel = $('#labpush'); if (sel) pushTarget = sel.value;
+    const n = tool.push(readFields(box));
+    const a = A();
+    if (a && a.toast) a.toast(n ? 'Sent ' + n + ' item' + (n === 1 ? '' : 's') + ' to the plan' : 'Pick a target component first');
+  }
+}
+function toggleFav(fv) {
+  const list = T.favs(); const i = list.indexOf(cur);
+  if (i < 0) list.push(cur); else list.splice(i, 1);
+  try { localStorage.setItem('sc-lab-favs', JSON.stringify(list)); } catch (e) {}
+  fv.classList.toggle('on', i < 0);
+  fv.dataset.on = i < 0 ? '1' : '';
+  fv.textContent = i < 0 ? 'Saved' : 'Save';
+  drawNav();
+}
+function runTool() {
+  const box = $('#labmain'); if (!box) return;
+  const tool = T.T[cur], out = $('#labout'); if (!tool || !out) return;
+  const v = readFields(box);
+  const s = T.state(); s[cur] = v; T.save(s);
+  out.innerHTML = resultHTML(tool, v);
+}
+
+/* ---------- shared plan helpers for tools ---------- */
+let pushTarget = '';
+T.plan = () => {
+  const a = A(); if (!a) return [];
+  return a.ALLC.map(c => ({ c, d: a.getC(c.id) }));
+};
+T.pushRisks = (list) => {
+  const a = A(); if (!a) return 0;
+  const sel = $('#labpush'); if (!sel || !sel.value) return 0;
+  const id = sel.value, d = a.getC(id), add = list.map(x => '- ' + x).filter(Boolean);
+  if (!add.length) return 0;
+  const prev = String(d.rk || '').trim();
+  d.rk = prev ? prev + '\n' + add.join('\n') : add.join('\n');
+  a.touch('c:' + id); a.render(); return add.length;
+};
+T.pushKpis = (list) => {
+  const a = A(); if (!a) return 0;
+  const sel = $('#labpush'); if (!sel || !sel.value) return 0;
+  const id = sel.value, d = a.getC(id); let n = 0;
+  list.forEach(k => {
+    const name = String(k && k.k || '').trim(); if (!name) return;
+    const hit = (d.kp || []).find(x => String(x.k || '').trim().toLowerCase() === name.toLowerCase());
+    if (hit) {
+      if (k.b != null) hit.b = String(k.b);
+      if (k.t != null) hit.t = String(k.t);
+      if (k.h != null) hit.h = String(k.h);
+    } else {
+      d.kp.push({ k: name, b: k.b == null ? '' : String(k.b), t: k.t == null ? '' : String(k.t), h: k.h == null ? '' : String(k.h) });
+    }
+    n++;
+  });
+  if (!n) return 0;
+  a.touch('c:' + id); a.render(); return n;
+};
+T.pushDecisions = (list) => {
+  const a = A(); if (!a) return 0;
+  const sel = $('#labpush'); if (!sel || !sel.value) return 0;
+  const id = sel.value, d = a.getC(id), add = list.map(x => '- ' + x).filter(Boolean);
+  if (!add.length) return 0;
+  const prev = String(d.dec || '').trim();
+  d.dec = prev ? prev + '\n' + add.join('\n') : add.join('\n');
+  a.touch('c:' + id); a.render(); return add.length;
+};
+T.compSelect = () => {
+  const a = A(); if (!a) return '';
+  const cur = pushTarget && a.BYID[pushTarget] ? pushTarget : (a.ALLC[0] ? a.ALLC[0].id : '');
+  return '<div class="labpush"><label class="lf"><span>Send to component</span><select id="labpush">' +
+    a.ALLC.map(c => '<option value="' + c.id + '"' + (c.id === cur ? ' selected' : '') + '>' + E(c.id + ' ' + c.short) + '</option>').join('') +
+    '</select></label></div>';
+};
+
+/* ---------- native Analysis Lab page (uses the app shell, not a modal) ---------- */
+let pageQ = '', pageCat = 'All';
+function labCards() {
+  const q = pageQ.trim().toLowerCase();
+  const ids = T.order.filter(id => {
+    const t = T.T[id];
+    if (pageCat !== 'All' && t.cat !== pageCat) return false;
+    return !q || (t.n + ' ' + t.d + ' ' + t.cat).toLowerCase().includes(q);
+  });
+  if (!ids.length) return '<p class="labnote" style="grid-column:1/-1">No tool matches that search.</p>';
+  const favs = T.favs();
+  return ids.map(id => {
+    const t = T.T[id];
+    return '<button class="card labcard" type="button" data-labopen="' + id + '">' +
+      '<span class="labtag">' + E(t.cat) + '</span>' +
+      '<h3>' + E(t.n) + '</h3>' +
+      '<p>' + E(t.d) + '</p>' +
+      '<span class="labmeta">' + (t.push ? '<em>Writes to plan</em>' : '') + (t.pre ? '<em>Loads your data</em>' : '') + (favs.includes(id) ? '<em>Saved</em>' : '') + '</span>' +
+      '</button>';
+  }).join('');
+}
+function vLabPage() {
+  const total = T.order.length;
+  const cats = T.CATS.filter(c => c !== 'Favourites' && c !== 'Recent');
+  const pushes = T.order.filter(id => T.T[id].push).length;
+  const pres = T.order.filter(id => T.T[id].pre).length;
+  const favs = T.favs().length;
+  const rec = T.recent().filter(id => T.T[id]).slice(0, 6);
+  const chips = ['All'].concat(cats).map(c =>
+    '<button type="button" class="chip' + (c === pageCat ? ' on' : '') + '" data-labcat="' + E(c) + '">' + E(c === 'All' ? 'All tools' : c) + '</button>').join('');
+  return (typeof crumbs === 'function' ? crumbs([{ t: 'Overview', go: 'home' }, { t: 'Analysis Lab' }]) : '') +
+    '<span class="eyebrow">Analysis Lab</span>' +
+    '<h1 style="margin-top:6px">' + total + ' working tools, built on the same plan</h1>' +
+    '<p class="lead">Calculators for finance, pricing, growth, risk, operations, people, data, strategy, ESG and delivery. Every tool recalculates as you type, exports to CSV and prints. ' + pres + ' tools read what is already in your workspace and ' + pushes + ' write their result back into a component, so the analysis and the plan never drift apart.</p>' +
+    '<div class="kpis" style="margin-top:20px">' +
+      '<section class="card kpi"><b>' + total + '</b><span>tools</span></section>' +
+      '<section class="card kpi"><b>' + cats.length + '</b><span>categories</span></section>' +
+      '<section class="card kpi"><b>' + pushes + '</b><span>write to the plan</span></section>' +
+      '<section class="card kpi"><b>' + favs + '</b><span>saved</span></section>' +
+    '</div>' +
+    '<div class="scope"><button class="btn pri" type="button" data-labpage="panel">Open the quick panel</button><button class="btn" type="button" data-labpage="random">Surprise me</button><button class="btn" type="button" data-labpage="csv">Download the tool list (CSV)</button></div>' +
+    (rec.length ? '<p class="labnote" style="margin-top:14px">Recent: ' + rec.map(id => '<a href="#" data-labopen="' + id + '">' + E(T.T[id].n) + '</a>').join(' &middot; ') + '</p>' : '') +
+    '<section class="card panel" style="margin-top:18px"><div class="labpghead"><h2>Find a tool</h2><input id="labpageq" type="search" placeholder="Search ' + total + ' tools" value="' + E(pageQ) + '" aria-label="Search tools"></div>' +
+      '<div class="labchips">' + chips + '</div>' +
+      '<div class="labcards" id="labpagegrid">' + labCards() + '</div></section>' +
+    '<p class="labnote">Keyboard: Ctrl or Cmd + K searches pages, levels, components and tools. Alt + L opens the quick panel from anywhere.</p>';
+}
+window.vLab = vLabPage;
+D.addEventListener('input', e => {
+  if (e.target && e.target.id === 'labpageq') {
+    pageQ = e.target.value;
+    const g = $('#labpagegrid'); if (g) g.innerHTML = labCards();
+  }
+});
+D.addEventListener('click', e => {
+  if (!e.target.closest) return;
+  const cat = e.target.closest('[data-labcat]');
+  if (cat) {
+    e.preventDefault(); pageCat = cat.dataset.labcat;
+    $$('[data-labcat]').forEach(b => b.classList.toggle('on', b.dataset.labcat === pageCat));
+    const g = $('#labpagegrid'); if (g) g.innerHTML = labCards();
+    return;
+  }
+  const card = e.target.closest('[data-labopen]');
+  if (card) { e.preventDefault(); openLab(card.dataset.labopen); return; }
+  const act = e.target.closest('[data-labpage]');
+  if (act) {
+    e.preventDefault();
+    const k = act.dataset.labpage;
+    if (k === 'panel') openLab();
+    else if (k === 'random') openLab(T.order[Math.floor(Math.random() * T.order.length)]);
+    else if (k === 'csv') {
+      const head = 'Tool,Category,Description,Fields,Reads the plan,Writes to the plan\n';
+      const body = T.order.map(id => {
+        const t = T.T[id];
+        return [t.n, t.cat, t.d, t.f.map(f => f.l).join(' / '), t.pre ? 'Yes' : 'No', t.push ? 'Yes' : 'No']
+          .map(x => '"' + String(x == null ? '' : x).replace(/"/g, '""') + '"').join(',');
+      }).join('\r\n');
+      download('strategy-cascade-tools.csv', head + body);
+    }
+  }
+});
+
+/* ---------- command palette (Ctrl/Cmd+K) ---------- */
+const PAGES = [['home', 'Overview'], ['domains', 'Domains'], ['outputs', 'Output center'], ['versions', 'Versions'], ['sources', 'Data sources'], ['toolkit', 'Finance toolkit'], ['budget', 'Campaign budget'], ['software', 'Software options'], ['review', 'Review and print']];
+let palIdx = 0, palItems = [];
+function palOpen() {
+  const cp = $('#cp'); if (!cp) return;
+  cp.classList.add('on');
+  const i = $('#cpi'); if (i) { i.value = ''; setTimeout(() => i.focus(), 20); }
+  palRender('');
+}
+function palClose() { const cp = $('#cp'); if (cp) cp.classList.remove('on'); }
+function palRender(q) {
+  const a = A(), t = q.trim().toLowerCase();
+  const items = [];
+  PAGES.forEach(p => items.push({ g: 'Page', t: p[1], m: '#' + p[0], go: p[0] }));
+  if (a) (a.LV || window.__LV || []).forEach(l => items.push({ g: 'Level', t: 'Level ' + l.n + ' - ' + l.name, m: l.comps.length + ' components', go: l.id }));
+  if (a) a.ALLC.forEach(c => items.push({ g: 'Component', t: c.id + ' ' + c.short, m: c.lv.name, go: c.id }));
+  T.order.forEach(id => items.push({ g: 'Lab tool', t: T.T[id].n, m: T.T[id].cat, lab: id }));
+  [['lab', 'Open the Lab'], ['tk', 'Open the Toolkit'], ['ins', 'Open cascade insights'], ['as', 'Open the assistant'], ['theme', 'Toggle dark mode'], ['print', 'Print this page']].forEach(x => items.push({ g: 'Action', t: x[1], m: '', act: x[0] }));
+  palItems = items.filter(x => !t || (x.t + ' ' + x.g + ' ' + (x.m || '')).toLowerCase().includes(t)).slice(0, 40);
+  if (!palItems.length) { $('#cpl').innerHTML = '<p class="muted" style="padding:10px 16px;font-size:13px">Nothing found.</p>'; return; }
+  palIdx = clamp(palIdx, 0, palItems.length - 1);
+  $('#cpl').innerHTML = palItems.map((x, i) => '<a href="#" data-i="' + i + '" class="' + (i === palIdx ? 'on' : '') + '"><span>' + E(x.t) + '</span><span class="cpm">' + E(x.g) + (x.m ? ' - ' + E(x.m) : '') + '</span></a>').join('');
+}
+function palRun(i) {
+  const x = palItems[i]; if (!x) return;
+  palClose();
+  if (x.go) { const a = A(); if (a && a.go) a.go(x.go); else location.hash = x.go; }
+  else if (x.lab) openLab(x.lab);
+  else if (x.act === 'lab') { const a = A(); if (a && a.go) a.go('lab'); else openLab(); }
+  else if (x.act === 'tk') { const b = $('#tkb'); if (b) b.click(); }
+  else if (x.act === 'ins') { const b = $('#insb'); if (b) b.click(); }
+  else if (x.act === 'as') { const b = $('#askc'); if (b) b.click(); }
+  else if (x.act === 'theme') { const b = $('[data-act=theme]'); if (b) b.click(); }
+  else if (x.act === 'print') window.print();
+}
+window.__lab.open = openLab;
+window.__lab.palette = palOpen;
+D.addEventListener('keydown', e => {
+  const k = e.key.toLowerCase();
+  if ((e.ctrlKey || e.metaKey) && k === 'k') { e.preventDefault(); const cp = $('#cp'); if (cp && cp.classList.contains('on')) palClose(); else palOpen(); return; }
+  if (k === 'escape') { palClose(); const m = $('#labm'); if (m) m.remove(); return; }
+  const cp = $('#cp');
+  if (cp && cp.classList.contains('on')) {
+    if (k === 'arrowdown') { e.preventDefault(); palIdx = Math.min(palItems.length - 1, palIdx + 1); palRender($('#cpi').value); }
+    else if (k === 'arrowup') { e.preventDefault(); palIdx = Math.max(0, palIdx - 1); palRender($('#cpi').value); }
+    else if (k === 'enter') { e.preventDefault(); palRun(palIdx); }
+  }
+});
+D.addEventListener('input', e => {
+  if (e.target && e.target.id === 'cpi') { palIdx = 0; palRender(e.target.value); }
+});
+D.addEventListener('click', e => {
+  const cp = $('#cp');
+  if (cp && e.target === cp) palClose();
+  const b = e.target.closest ? e.target.closest('[data-act=palette]') : null;
+  if (b) { e.preventDefault(); palOpen(); return; }
+  const link = e.target.closest ? e.target.closest('#cpl a') : null;
+  if (link) { e.preventDefault(); palRun(+link.dataset.i); }
+});
+})();
+
+
+/* Strategy Cascade Lab - finance and pricing tools */
+(() => {
+'use strict';
+const L = window.__lab; if (!L) return;
+const { E, N, num, pct, rows, tbl, kpi, bar, note, svg, ax, tx, clamp } = L;
+const A = 'Finance and valuation';
+
+L.add(A, 'be', 'Break-even analysis', 'Contribution margin, break-even units and revenue, the units needed for a target profit, and margin of safety.',
+  [{ k: 'price', l: 'Price per unit', d: '100' }, { k: 'vc', l: 'Variable cost per unit', d: '40' }, { k: 'fixed', l: 'Fixed costs per period', d: '50000' }, { k: 'target', l: 'Target profit per period', d: '20000' }, { k: 'actual', l: 'Actual units sold', d: '1500' }],
+  v => {
+    const p = N(v.price), c = N(v.vc), f = N(v.fixed), t = N(v.target), a = N(v.actual);
+    const cm = p - c, cmr = p ? cm / p * 100 : 0, be = cm > 0 ? f / cm : NaN, rev = be * p;
+    const tu = cm > 0 ? (f + t) / cm : NaN, mos = be && a ? (a - be) / a * 100 : NaN;
+    return kpi([['Contribution per unit', num(cm, 2)], ['Contribution margin', pct(cmr)], ['Break-even units', isFinite(be) ? num(Math.ceil(be)) : 'n/a'], ['Break-even revenue', isFinite(rev) ? num(rev) : 'n/a'], ['Units for target profit', isFinite(tu) ? num(Math.ceil(tu)) : 'n/a'], ['Margin of safety', isFinite(mos) ? pct(mos) : 'n/a']]) +
+      tbl(['Check', 'Value'], [['Price', num(p, 2)], ['Variable cost', num(c, 2)], ['Fixed cost', num(f)], ['Target profit', num(t)], ['Profit at actual volume', num((a * cm) - f, 2)], ['Verdict', cm <= 0 ? '<b style="color:#c9473d">Price does not cover variable cost</b>' : a >= be ? '<b style="color:#2e9d62">Above break-even</b>' : '<b style="color:#d9922b">Below break-even</b>']]) +
+      note('Break-even units = fixed costs / contribution per unit. Every unit above break-even adds the full contribution to profit.');
+  });
+
+L.add(A, 'amort', 'Loan amortisation schedule', 'Monthly payment, interest and principal split, total cost of credit, and the effect of extra payments.',
+  [{ k: 'p', l: 'Loan principal', d: '500000' }, { k: 'rate', l: 'Annual interest rate %', d: '6' }, { k: 'y', l: 'Term in years', d: '5' }, { k: 'n', l: 'Payments per year', d: '12' }, { k: 'x', l: 'Extra payment each period', d: '0' }],
+  v => {
+    const P = N(v.p), rate = N(v.rate) / 100, y = Math.max(1, N(v.y)), per = Math.max(1, N(v.n)), extra = Math.max(0, N(v.x));
+    const r = rate / per, n = Math.round(y * per);
+    const pmt = r ? P * r / (1 - Math.pow(1 + r, -n)) : P / n;
+    let bal = P, totInt = 0, k = 0, rowsO = [], firstBal = P;
+    const maxK = n * 4 + 2400;
+    while (bal > 0.005 && k < maxK) {
+      const int = bal * r, prin = Math.min(bal, pmt - int + extra);
+      const pay = prin + int;
+      bal = Math.max(0, bal - prin); totInt += int; k++;
+      if (k <= 12 || bal === 0) rowsO.push([k, num(firstBal, 2), num(pay, 2), num(int, 2), num(prin, 2), num(bal, 2)]);
+      firstBal = bal;
+    }
+    const baseInt = (pmt * n) - P;
+    const saved = baseInt - totInt;
+    return kpi([['Payment', num(pmt + extra, 2)], ['Payoff', k + ' periods'], ['Total interest', num(totInt, 2)], ['Interest saved', extra > 0 ? num(saved, 2) : '-'], ['Total repaid', num(P + totInt, 2)]]) +
+      tbl(['#', 'Opening', 'Payment', 'Interest', 'Principal', 'Closing'], rowsO) +
+      note('Standard payment is ' + num(pmt, 2) + ' per period for ' + n + ' periods.' + (extra > 0 ? ' With the extra ' + num(extra, 2) + ' the loan clears in ' + k + ' periods and saves ' + num(saved, 2) + ' in interest.' : ' Add an extra payment to see the saving.'));
+  });
+
+L.add(A, 'dcf', 'Discounted cash flow', 'Present value of explicit cash flows plus a Gordon terminal value, with a value bridge.',
+  [{ k: 'rate', l: 'Discount rate %', d: '10' }, { k: 'g', l: 'Terminal growth %', d: '2' }, { k: 'cf', l: 'Cash flows by year, comma separated (year 0 first)', d: '-1000,200,300,400,500', t: 't', r: 2 }],
+  v => {
+    const r = N(v.rate) / 100, g = N(v.g) / 100, cf = String(v.cf || '').split(',').map(N);
+    if (!cf.length) return note('Enter at least one cash flow.');
+    let pv = 0; const rs = cf.map((x, i) => { const d = Math.pow(1 + r, i), p = x / d; pv += p; return [i, num(x, 2), num(p, 2)]; });
+    const last = cf[cf.length - 1], tv = r > g ? last * (1 + g) / (r - g) : NaN;
+    const pvtv = isFinite(tv) ? tv / Math.pow(1 + r, cf.length - 1) : NaN;
+    return kpi([['PV of cash flows', num(pv, 2)], ['Terminal value', isFinite(tv) ? num(tv, 2) : 'n/a'], ['PV of terminal value', isFinite(pvtv) ? num(pvtv, 2) : 'n/a'], ['Enterprise value', isFinite(pvtv) ? num(pv + pvtv, 2) : 'n/a']]) +
+      tbl(['Year', 'Cash flow', 'Present value'], rs) +
+      (r <= g ? note('<b>Discount rate must exceed terminal growth</b>, otherwise the terminal value is infinite.') : note('Terminal value uses the last cash flow grown at ' + pct(N(v.g)) + ' and discounted at ' + pct(N(v.rate)) + '.'));
+  });
+
+L.add(A, 'wacc', 'Weighted average cost of capital', 'Capital structure weights, after-tax cost of debt and the blended discount rate.',
+  [{ k: 'e', l: 'Market value of equity', d: '700' }, { k: 'd', l: 'Market value of debt', d: '300' }, { k: 'ke', l: 'Cost of equity %', d: '12' }, { k: 'kd', l: 'Cost of debt %', d: '6' }, { k: 'tax', l: 'Tax rate %', d: '25' }],
+  v => {
+    const e = Math.max(0, N(v.e)), d = Math.max(0, N(v.d)), ke = N(v.ke), kd = N(v.kd), tax = N(v.tax) / 100, V = e + d;
+    if (!V) return note('Enter equity and debt values.');
+    const we = e / V, wd = d / V, at = kd * (1 - tax), w = we * ke + wd * at;
+    return kpi([['WACC', pct(w, 2)], ['Equity weight', pct(we * 100)], ['Debt weight', pct(wd * 100)], ['After-tax cost of debt', pct(at, 2)]]) +
+      tbl(['Component', 'Weight', 'Cost', 'Contribution'], [['Equity', pct(we * 100), pct(ke, 2), pct(we * ke, 2)], ['Debt', pct(wd * 100), pct(at, 2), pct(wd * at, 2)], ['<b>Total</b>', '100%', '', '<b>' + pct(w, 2) + '</b>']]) +
+      note('Use WACC as the discount rate for projects with the same risk as the business. Use a higher rate for riskier projects.');
+  });
+
+L.add(A, 'unit', 'Unit economics and CAC payback', 'Gross profit per customer, CAC payback, lifetime value and the LTV to CAC ratio.',
+  [{ k: 'arpu', l: 'Monthly revenue per customer', d: '50' }, { k: 'gm', l: 'Gross margin %', d: '70' }, { k: 'cac', l: 'Customer acquisition cost', d: '300' }, { k: 'churn', l: 'Monthly churn %', d: '2' }, { k: 'exp', l: 'Monthly expansion %', d: '0.5' }],
+  v => {
+    const arpu = N(v.arpu), gm = N(v.gm) / 100, cac = N(v.cac), ch = N(v.churn) / 100, ex = N(v.exp) / 100;
+    const gp = arpu * gm, net = ch - ex, pb = gp > 0 ? cac / gp : NaN, ltv = net > 0 ? gp / net : NaN, ratio = cac > 0 && isFinite(ltv) ? ltv / cac : NaN;
+    return kpi([['Gross profit / month', num(gp, 2)], ['CAC payback', isFinite(pb) ? num(pb, 1) + ' months' : 'never'], ['Lifetime value', isFinite(ltv) ? num(ltv, 2) : 'unbounded'], ['LTV : CAC', isFinite(ratio) ? num(ratio, 2) + 'x' : 'n/a']]) +
+      tbl(['Check', 'Value'], [['Net revenue churn', pct(net * 100, 2)], ['Gross margin per customer', num(gp, 2)], ['Payback in years', isFinite(pb) ? num(pb / 12, 2) : 'n/a'], ['Healthy LTV:CAC', ratio >= 3 ? '<b style="color:#2e9d62">Yes, above 3x</b>' : '<b style="color:#d9922b">Below the usual 3x benchmark</b>']]) +
+      note('Net revenue churn is churn minus expansion. If expansion is higher than churn, lifetime value is unbounded and the ratio cannot be calculated.');
+  });
+
+L.add(A, 'varw', 'Budget variance waterfall', 'Compare budget with actual by line and show the bridge from budget to actual.',
+  [{ k: 'v', l: 'One line per item: name|budget|actual', d: 'Marketing|120000|135000\nSales|80000|72000\nOperations|60000|66000', t: 't' }],
+  v => {
+    const r = rows(v.v).map(x => ({ n: x[0] || 'Item', b: N(x[1]), a: N(x[2]) })).filter(x => x.b || x.a);
+    if (!r.length) return note('Add at least one line in the form name|budget|actual.');
+    const tb = r.reduce((s, x) => s + x.b, 0), ta = r.reduce((s, x) => s + x.a, 0);
+    const W = 460, H = 200, pad = 34, max = Math.max(tb, ta, ...r.map(x => Math.max(x.b, x.a))) || 1;
+    const n = r.length + 2, bw = (W - pad * 2) / n;
+    const Y = x => H - pad - (H - pad * 1.6) * (x / max);
+    const barAt = (i, from, to, fill, label) => {
+      const y0 = Y(from), y1 = Y(to), yy = Math.min(y0, y1), hh = Math.max(2, Math.abs(y1 - y0));
+      return '<rect x="' + (pad + bw * i + 3) + '" y="' + yy + '" width="' + (bw - 6) + '" height="' + hh + '" rx="2" fill="' + fill + '" fill-opacity=".85"/>' + tx(pad + bw * i + bw / 2, H - pad + 13, label);
+    };
+    let bars = barAt(0, 0, tb, '#6b7280', 'Budget'), cum = tb;
+    r.forEach((x, i) => {
+      const d = x.a - x.b;
+      bars += barAt(i + 1, cum, cum + d, d >= 0 ? '#2e9d62' : '#c9473d', x.n);
+      cum += d;
+    });
+    bars += barAt(n - 1, 0, ta, '#2e6bd9', 'Actual');
+    return kpi([['Budget', num(tb)], ['Actual', num(ta)], ['Variance', num(ta - tb)], ['Variance %', tb ? pct((ta - tb) / tb * 100) : 'n/a']]) +
+      svg(W, H, ax(pad, H - pad, W - pad, H - pad) + bars) +
+      tbl(['Line', 'Budget', 'Actual', 'Variance', '%'], r.map(x => [E(x.n), num(x.b), num(x.a), '<span style="color:' + (x.a > x.b ? '#c9473d' : '#2e9d62') + '">' + num(x.a - x.b) + '</span>', x.b ? pct((x.a - x.b) / x.b * 100) : 'n/a']));
+  });
+
+L.add(A, 'cf13', '13-week cash flow forecast', 'Weekly opening and closing cash, the lowest point, and the first week below your minimum.',
+  [{ k: 'open', l: 'Opening cash', d: '250000' }, { k: 'in', l: 'Weekly inflows, comma separated (13 values)', d: '90000,90000,90000,90000,90000,90000,90000,90000,90000,90000,90000,90000,90000', t: 't', r: 2 }, { k: 'out', l: 'Weekly outflows, comma separated (13 values)', d: '95000,95000,95000,95000,95000,95000,95000,95000,95000,95000,95000,95000,95000', t: 't', r: 2 }, { k: 'min', l: 'Minimum cash buffer', d: '100000' }],
+  v => {
+    const ins = String(v.in || '').split(',').map(N), outs = String(v.out || '').split(',').map(N);
+    const weeks = Math.max(ins.length, outs.length, 1), min = N(v.min);
+    let cash = N(v.open), low = cash, lowW = 0, first = null, rs = [];
+    for (let i = 0; i < weeks; i++) {
+      const a = ins[i] || 0, b = outs[i] || 0;
+      cash += a - b;
+      if (cash < low) { low = cash; lowW = i + 1; }
+      if (first === null && cash < min) first = i + 1;
+      rs.push([i + 1, num(a), num(b), num(a - b), num(cash), cash < min ? '<b style="color:#c9473d">Below buffer</b>' : '']);
+    }
+    return kpi([['Closing cash', num(cash)], ['Lowest cash', num(low)], ['Lowest week', 'Week ' + lowW], ['First breach', first ? 'Week ' + first : 'None']]) +
+      tbl(['Week', 'In', 'Out', 'Net', 'Closing', ''], rs) +
+      note(first ? 'Cash falls below the buffer in week ' + first + '. Raise funding, delay payments or accelerate collections before then.' : 'Cash stays above the buffer across the horizon.');
+  });
+
+L.add(A, 'mbridge', 'Margin bridge', 'Split the change in gross profit into a volume effect and a margin effect.',
+  [{ k: 'r0', l: 'Prior revenue', d: '1000000' }, { k: 'm0', l: 'Prior gross margin %', d: '40' }, { k: 'r1', l: 'Current revenue', d: '1200000' }, { k: 'm1', l: 'Current gross margin %', d: '36' }],
+  v => {
+    const r0 = N(v.r0), m0 = N(v.m0) / 100, r1 = N(v.r1), m1 = N(v.m1) / 100;
+    const g0 = r0 * m0, g1 = r1 * m1, vol = (r1 - r0) * m0, mar = r1 * (m1 - m0);
+    return kpi([['Prior gross profit', num(g0)], ['Current gross profit', num(g1)], ['Change', num(g1 - g0)], ['Volume effect', num(vol)], ['Margin effect', num(mar)]]) +
+      tbl(['Driver', 'Amount', 'Share of change'], [['Volume', num(vol), (g1 - g0) ? pct(vol / (g1 - g0) * 100) : 'n/a'], ['Margin', num(mar), (g1 - g0) ? pct(mar / (g1 - g0) * 100) : 'n/a'], ['<b>Total</b>', '<b>' + num(g1 - g0) + '</b>', '100%']]) +
+      note('Volume effect = change in revenue at the old margin. Margin effect = current revenue at the change in margin.');
+  });
+
+L.add(A, 'lease', 'Lease or buy', 'Compare the present value of leasing against buying, including residual value and maintenance.',
+  [{ k: 'cost', l: 'Purchase cost', d: '120000' }, { k: 'm', l: 'Monthly lease payment', d: '2500' }, { k: 'term', l: 'Term in months', d: '48' }, { k: 'res', l: 'Residual value % of cost', d: '20' }, { k: 'rate', l: 'Discount rate % per year', d: '8' }, { k: 'maint', l: 'Annual maintenance if owned', d: '1200' }],
+  v => {
+    const c = N(v.cost), m = N(v.m), t = Math.max(1, N(v.term)), res = N(v.res) / 100, r = N(v.rate) / 1200, maint = N(v.maint);
+    const ann = r ? (1 - Math.pow(1 + r, -t)) / r : t;
+    const pvLease = m * ann;
+    const pvRes = c * res / Math.pow(1 + r, t);
+    const pvMaint = maint * (ann / 12);
+    const pvBuy = c - pvRes + pvMaint;
+    return kpi([['PV of leasing', num(pvLease)], ['PV of buying', num(pvBuy)], ['Difference', num(pvBuy - pvLease)], ['Cheaper option', pvLease < pvBuy ? 'Lease' : 'Buy']]) +
+      tbl(['Component', 'Amount'], [['Lease payments', num(pvLease)], ['Purchase', num(c)], ['PV of residual', '-' + num(pvRes)], ['PV of maintenance', num(pvMaint)], ['<b>PV of buying</b>', '<b>' + num(pvBuy) + '</b>']]) +
+      note('This compares cash cost only. Consider tax treatment, balance-sheet presentation, flexibility and the risk that the residual value is wrong.');
+  });
+
+L.add(A, 'div', 'Dividend or buyback', 'Compare cash returned as a dividend against a share buyback and the effect on earnings per share.',
+  [{ k: 'sh', l: 'Shares outstanding', d: '1000000' }, { k: 'price', l: 'Share price', d: '20' }, { k: 'cash', l: 'Cash available', d: '500000' }, { k: 'eps', l: 'Earnings per share', d: '2' }, { k: 'dps', l: 'Planned dividend per share', d: '0.5' }],
+  v => {
+    const sh = Math.max(1, N(v.sh)), p = N(v.price), cash = N(v.cash), eps = N(v.eps), dps = N(v.dps);
+    const earn = sh * eps;
+    const divTotal = dps * sh;
+    const buyShares = p > 0 ? Math.min(sh, cash / p) : 0;
+    const newSh = sh - buyShares;
+    const epsBuy = newSh ? earn / newSh : NaN;
+    return kpi([['Dividend cost', num(divTotal)], ['Dividend yield', p ? pct(dps / p * 100, 2) : 'n/a'], ['Shares repurchased', num(buyShares)], ['EPS after buyback', num(epsBuy, 2)]]) +
+      tbl(['Route', 'Cash used', 'Shares after', 'EPS after', 'Yield'], [['Dividend', num(divTotal), num(sh), num(eps, 2), p ? pct(dps / p * 100, 2) : 'n/a'], ['Buyback', num(cash), num(newSh), num(epsBuy, 2), p ? pct(epsBuy / p * 100, 2) : 'n/a'], ['Do nothing', '0', num(sh), num(eps, 2), p ? pct(eps / p * 100, 2) : 'n/a']]) +
+      note('A buyback raises EPS only if the earnings yield (EPS / price) is above the after-tax return on the cash. Otherwise it destroys value.');
+  });
+
+/* ---------------- pricing and revenue ---------------- */
+const P = 'Pricing and revenue';
+
+L.add(P, 'elast', 'Price elasticity simulator', 'Model volume, revenue and profit at a new price using an elasticity estimate.',
+  [{ k: 'p', l: 'Current price', d: '100' }, { k: 'c', l: 'Variable cost per unit', d: '40' }, { k: 'q', l: 'Current units', d: '10000' }, { k: 'e', l: 'Price elasticity (negative)', d: '-1.5' }, { k: 'np', l: 'New price', d: '110' }],
+  v => {
+    const p = N(v.p), c = N(v.c), q = N(v.q), e = N(v.e), np = N(v.np);
+    const dp = p ? (np - p) / p : 0, dq = e * dp, nq = Math.max(0, q * (1 + dq));
+    const r0 = p * q, r1 = np * nq, pr0 = (p - c) * q, pr1 = (np - c) * nq;
+    const beLoss = (p - c) / (np - c) - 1;
+    return kpi([['Price change', pct(dp * 100)], ['Volume change', pct(dq * 100)], ['New units', num(nq)], ['Revenue change', num(r1 - r0)], ['Profit change', num(pr1 - pr0)]]) +
+      tbl(['Metric', 'Now', 'At new price'], [['Price', num(p, 2), num(np, 2)], ['Units', num(q), num(nq)], ['Revenue', num(r0), num(r1)], ['Gross profit', num(pr0), num(pr1)], ['Margin', pct((p - c) / p * 100), pct((np - c) / np * 100)]]) +
+      note('The volume you can lose before profit falls is ' + pct(-beLoss * 100) + '. Your assumed loss is ' + pct(-dq * 100) + '.');
+  });
+
+L.add(P, 'disc', 'Discount ladder', 'See the margin and the extra volume needed at each discount level to keep the same profit.',
+  [{ k: 'list', l: 'List price', d: '100' }, { k: 'cost', l: 'Unit cost', d: '40' }, { k: 'base', l: 'Units sold at list price', d: '1000' }, { k: 'd', l: 'Discounts to test, comma separated %', d: '0,5,10,15,20,25,30' }],
+  v => {
+    const lp = N(v.list), c = N(v.cost), base = Math.max(1, N(v.base)), ds = String(v.d || '').split(',').map(N);
+    const baseProfit = (lp - c) * base;
+    const rs = ds.map(d => {
+      const price = lp * (1 - d / 100), m = price - c, units = m > 0 ? baseProfit / m : Infinity;
+      return [pct(d), num(price, 2), num(m, 2), price ? pct(m / price * 100) : 'n/a', isFinite(units) ? num(Math.ceil(units)) : 'never', isFinite(units) ? pct((units / base - 1) * 100) : 'n/a'];
+    });
+    return kpi([['List margin', pct((lp - c) / lp * 100)], ['Profit at list', num(baseProfit)], ['Break-even discount', pct((1 - c / lp) * 100)]]) +
+      tbl(['Discount', 'Price', 'Margin / unit', 'Margin %', 'Units needed', 'Volume uplift needed'], rs) +
+      note('A discount cuts straight into margin. At a 40% unit cost, a 20% discount needs far more than 20% extra volume to stand still.');
+  });
+
+L.add(P, 'mrr', 'MRR and ARR projection', 'Project recurring revenue month by month with new business, churn and expansion.',
+  [{ k: 'mrr', l: 'Starting MRR', d: '50000' }, { k: 'new', l: 'New MRR per month', d: '8000' }, { k: 'churn', l: 'Monthly churn %', d: '2' }, { k: 'exp', l: 'Monthly expansion %', d: '1' }, { k: 'months', l: 'Months to project', d: '12' }],
+  v => {
+    const n = clamp(Math.round(N(v.months)), 1, 60);
+    let mrr = N(v.mrr), rs = [], total = 0;
+    for (let i = 1; i <= n; i++) {
+      const ch = mrr * N(v.churn) / 100, ex = mrr * N(v.exp) / 100, add = N(v.new);
+      mrr = mrr - ch + ex + add; total += add;
+      rs.push([i, num(add), num(ch), num(ex), num(mrr), num(mrr * 12)]);
+    }
+    return kpi([['Ending MRR', num(mrr)], ['Ending ARR', num(mrr * 12)], ['Net new MRR', num(mrr - N(v.mrr))], ['Average monthly growth', pct((Math.pow(mrr / (N(v.mrr) || 1), 1 / n) - 1) * 100, 2)]]) +
+      tbl(['Month', 'New', 'Churn', 'Expansion', 'MRR', 'ARR'], rs);
+  });
+
+L.add(P, 'vw', 'Price sensitivity range', 'Turn four price points into an acceptable price band and a recommended test price.',
+  [{ k: 'tc', l: 'Too cheap at or below', d: '40' }, { k: 'ch', l: 'A bargain at', d: '60' }, { k: 'ex', l: 'Getting expensive at', d: '100' }, { k: 'te', l: 'Too expensive at or above', d: '140' }],
+  v => {
+    const tc = N(v.tc), ch = N(v.ch), ex = N(v.ex), te = N(v.te);
+    const pmc = (tc + ch) / 2, pme = (ex + te) / 2, opp = (ch + ex) / 2;
+    return kpi([['Marginal cheapness', num(pmc, 2)], ['Indifference price', num(opp, 2)], ['Marginal expensiveness', num(pme, 2)], ['Acceptable band', num(pmc, 2) + ' to ' + num(pme, 2)]]) +
+      tbl(['Point', 'Price', 'Meaning'], [['Too cheap', num(tc, 2), 'Below this, quality is doubted'], ['Bargain', num(ch, 2), 'Strong value'], ['Expensive', num(ex, 2), 'Still acceptable'], ['Too expensive', num(te, 2), 'Demand falls away'], ['<b>Recommended test</b>', '<b>' + num(opp, 2) + '</b>', 'Run a price test around this point']]) +
+      note('Simplified Van Westendorp reading. Test the recommended price on a real sample before you change list prices.');
+  });
+
+L.add(P, 'pricemix', 'Revenue and margin mix', 'Revenue, gross profit, mix share and weighted margin for a product or service range.',
+  [{ k: 'v', l: 'One line per product: name|units|price|variable cost', d: 'Core|5000|100|40\nPlus|2000|150|60\nBasic|3000|60|25', t: 't' }],
+  v => {
+    const r = rows(v.v).map(x => ({ n: x[0] || 'Item', u: N(x[1]), p: N(x[2]), c: N(x[3]) })).filter(x => x.u || x.p);
+    if (!r.length) return note('Add at least one line: name|units|price|variable cost.');
+    const rev = r.reduce((s, x) => s + x.u * x.p, 0), gp = r.reduce((s, x) => s + x.u * (x.p - x.c), 0);
+    return kpi([['Revenue', num(rev)], ['Gross profit', num(gp)], ['Gross margin', rev ? pct(gp / rev * 100) : 'n/a'], ['Products', r.length]]) +
+      tbl(['Product', 'Units', 'Price', 'Revenue', 'Mix %', 'GP / unit', 'Margin %'], r.map(x => { const rv = x.u * x.p; return [E(x.n), num(x.u), num(x.p, 2), num(rv), rev ? pct(rv / rev * 100) : 'n/a', num(x.p - x.c, 2), x.p ? pct((x.p - x.c) / x.p * 100) : 'n/a']; })) +
+      note('Weighted margin is ' + (rev ? pct(gp / rev * 100) : 'n/a') + '. Shift volume towards the highest-margin lines to lift it without raising prices.');
+  });
+
+L.add(P, 'priceinc', 'Price increase impact', 'The profit effect of a price rise once you allow for lost volume, and the break-even volume loss.',
+  [{ k: 'p', l: 'Current price', d: '100' }, { k: 'q', l: 'Current units', d: '10000' }, { k: 'c', l: 'Variable cost per unit', d: '40' }, { k: 'inc', l: 'Price increase %', d: '8' }, { k: 'loss', l: 'Expected volume loss %', d: '5' }],
+  v => {
+    const p = N(v.p), q = N(v.q), c = N(v.c), inc = N(v.inc) / 100, loss = N(v.loss) / 100;
+    const np = p * (1 + inc), nq = q * (1 - loss);
+    const pr0 = (p - c) * q, pr1 = (np - c) * nq;
+    const beLoss = 1 - (p - c) / (np - c);
+    return kpi([['New price', num(np, 2)], ['New units', num(nq)], ['Profit now', num(pr0)], ['Profit after', num(pr1)], ['Change', num(pr1 - pr0)]]) +
+      tbl(['Check', 'Value'], [['Break-even volume loss', pct(beLoss * 100)], ['Assumed volume loss', pct(loss * 100)], ['Headroom', pct((beLoss - loss) * 100)], ['Verdict', loss <= beLoss ? '<b style="color:#2e9d62">Raises profit</b>' : '<b style="color:#c9473d">Lowers profit</b>']]) +
+      note('You can lose up to ' + pct(beLoss * 100) + ' of volume and still keep profit flat. Anything less than that is upside.');
+  });
+
+L.add(P, 'bundle', 'Bundle profitability', 'Compare a bundle price with the sum of standalone prices and show the margin effect.',
+  [{ k: 'v', l: 'One line per item: name|standalone price|cost', d: 'Software|60|10\nSupport|40|15\nTraining|50|20', t: 't' }, { k: 'bp', l: 'Bundle price', d: '120' }],
+  v => {
+    const r = rows(v.v).map(x => ({ n: x[0] || 'Item', p: N(x[1]), c: N(x[2]) })).filter(x => x.p || x.c);
+    if (!r.length) return note('Add at least one line: name|standalone price|cost.');
+    const sum = r.reduce((s, x) => s + x.p, 0), cost = r.reduce((s, x) => s + x.c, 0), bp = N(v.bp);
+    return kpi([['Standalone total', num(sum)], ['Bundle price', num(bp)], ['Discount', sum ? pct((1 - bp / sum) * 100) : 'n/a'], ['Bundle margin', bp ? pct((bp - cost) / bp * 100) : 'n/a']]) +
+      tbl(['Item', 'Standalone', 'Cost', 'Margin'], r.map(x => [E(x.n), num(x.p, 2), num(x.c, 2), x.p ? pct((x.p - x.c) / x.p * 100) : 'n/a'])) +
+      note('Bundle cost is ' + num(cost, 2) + ' and contribution is ' + num(bp - cost, 2) + '. A bundle wins when it raises total contribution even at a lower price per item.');
+  });
+
+L.add(P, 'chanmargin', 'Channel margin waterfall', 'Work back from the consumer price to your net price and margin through retailer and distributor margins.',
+  [{ k: 'cp', l: 'Consumer price', d: '100' }, { k: 'ret', l: 'Retailer margin %', d: '30' }, { k: 'dist', l: 'Distributor margin %', d: '15' }, { k: 'cogs', l: 'Your cost of goods', d: '25' }],
+  v => {
+    const cp = N(v.cp), ret = N(v.ret) / 100, dist = N(v.dist) / 100, cogs = N(v.cogs);
+    const distPrice = cp * (1 - ret), yourPrice = distPrice * (1 - dist), gp = yourPrice - cogs;
+    return kpi([['Your net price', num(yourPrice, 2)], ['Gross profit', num(gp, 2)], ['Gross margin', yourPrice ? pct(gp / yourPrice * 100) : 'n/a'], ['Share of consumer price', cp ? pct(yourPrice / cp * 100) : 'n/a']]) +
+      tbl(['Step', 'Price', 'Margin taken'], [['Consumer price', num(cp, 2), ''], ['Retailer margin', num(cp - distPrice, 2), pct(ret * 100)], ['Distributor price', num(distPrice, 2), ''], ['Distributor margin', num(distPrice - yourPrice, 2), pct(dist * 100)], ['<b>Your net price</b>', '<b>' + num(yourPrice, 2) + '</b>', '']]) +
+      note('You keep ' + (cp ? pct(yourPrice / cp * 100) : 'n/a') + ' of what the consumer pays. A 5 point retailer margin rise costs ' + num(cp * 0.05 * (1 - dist), 2) + ' per unit.');
+  });
+})();
+
+
+/* Strategy Cascade Lab - marketing and growth tools */
+(() => {
+'use strict';
+const L = window.__lab; if (!L) return;
+const { E, N, num, pct, rows, tbl, kpi, bar, note, svg, ax, tx, clamp } = L;
+const C = 'Marketing and growth';
+const erf = x => { const s = x < 0 ? -1 : 1; x = Math.abs(x); const t = 1 / (1 + 0.3275911 * x); const y = 1 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-x * x); return s * y; };
+const ncdf = z => 0.5 * (1 + erf(z / Math.SQRT2));
+
+L.add(C, 'funnel', 'Funnel conversion model', 'Turn traffic and stage conversion rates into leads, customers, revenue, CAC and ROAS.',
+  [{ k: 'vis', l: 'Visitors', d: '100000' }, { k: 'lead', l: 'Visitor to lead %', d: '4' }, { k: 'qual', l: 'Lead to qualified %', d: '35' }, { k: 'opp', l: 'Qualified to opportunity %', d: '45' }, { k: 'win', l: 'Opportunity to win %', d: '25' }, { k: 'deal', l: 'Average deal value', d: '4000' }, { k: 'spend', l: 'Marketing spend', d: '60000' }],
+  v => {
+    const vis = N(v.vis), lead = N(v.lead) / 100, qual = N(v.qual) / 100, opp = N(v.opp) / 100, win = N(v.win) / 100, deal = N(v.deal), spend = N(v.spend);
+    const nLead = vis * lead, nQual = nLead * qual, nOpp = nQual * opp, nWin = nOpp * win, rev = nWin * deal;
+    const overall = vis ? nWin / vis * 100 : 0;
+    return kpi([['Leads', num(nLead)], ['Opportunities', num(nOpp)], ['Customers', num(nWin)], ['Revenue', num(rev)], ['Overall conversion', pct(overall, 2)], ['CAC', nWin ? num(spend / nWin) : 'n/a'], ['ROAS', spend ? num(rev / spend, 2) + 'x' : 'n/a']]) +
+      tbl(['Stage', 'Count', 'Step conversion', 'Drop-off'], [['Visitors', num(vis), '', ''], ['Leads', num(nLead), pct(lead * 100), num(vis - nLead)], ['Qualified', num(nQual), pct(qual * 100), num(nLead - nQual)], ['Opportunities', num(nOpp), pct(opp * 100), num(nQual - nOpp)], ['Customers', num(nWin), pct(win * 100), num(nOpp - nWin)]]) +
+      note('A 1 point gain at the weakest stage is worth more than a 1 point gain at a strong one. Compare the drop-off column.');
+  });
+
+L.add(C, 'mmix', 'Media mix reallocation', 'Rank channels by ROAS and see the revenue effect of moving budget from the weakest to the strongest.',
+  [{ k: 'v', l: 'One line per channel: name|budget|ROAS', d: 'Search|40000|3.2\nSocial|30000|2.4\nDisplay|20000|1.1\nEmail|10000|6.5', t: 't' }, { k: 'shift', l: 'Share of the weakest budget to move %', d: '20' }],
+  v => {
+    const r = rows(v.v).map(x => ({ n: x[0] || 'Channel', b: N(x[1]), roas: N(x[2]) })).filter(x => x.b);
+    if (r.length < 2) return note('Add at least two channels: name|budget|ROAS.');
+    const total = r.reduce((s, x) => s + x.b, 0), rev = r.reduce((s, x) => s + x.b * x.roas, 0);
+    const sorted = r.slice().sort((a, b) => a.roas - b.roas), weak = sorted[0], strong = sorted[sorted.length - 1];
+    const move = weak.b * N(v.shift) / 100, gain = move * (strong.roas - weak.roas);
+    return kpi([['Budget', num(total)], ['Revenue', num(rev)], ['Blended ROAS', total ? num(rev / total, 2) + 'x' : 'n/a'], ['Move', num(move)], ['Revenue gain', num(gain)]]) +
+      tbl(['Channel', 'Budget', 'ROAS', 'Revenue', 'Share'], r.map(x => [E(x.n), num(x.b), num(x.roas, 2) + 'x', num(x.b * x.roas), total ? pct(x.b / total * 100) : 'n/a'])) +
+      note('Move ' + num(move) + ' from ' + E(weak.n) + ' (' + num(weak.roas, 2) + 'x) to ' + E(strong.n) + ' (' + num(strong.roas, 2) + 'x) for an expected ' + num(gain) + ' more revenue. Check that the strong channel can absorb the budget before you shift it.');
+  });
+
+L.add(C, 'pacing', 'Campaign budget pacing', 'Compare spend and time elapsed, then show the daily spend needed to land on budget.',
+  [{ k: 'budget', l: 'Total budget', d: '120000' }, { k: 'spent', l: 'Spent to date', d: '45000' }, { k: 'day', l: 'Days elapsed', d: '30' }, { k: 'total', l: 'Total campaign days', d: '90' }],
+  v => {
+    const b = N(v.budget), s = N(v.spent), d = Math.max(1, N(v.day)), t = Math.max(d, N(v.total));
+    const timeP = d / t * 100, spendP = b ? s / b * 100 : 0, remaining = b - s, daysLeft = t - d;
+    const need = daysLeft > 0 ? remaining / daysLeft : 0, proj = d ? s / d * t : 0;
+    return kpi([['Time elapsed', pct(timeP)], ['Budget used', pct(spendP)], ['Remaining', num(remaining)], ['Needed per day', num(need)], ['Projected total', num(proj)]]) +
+      tbl(['Check', 'Value'], [['Pacing gap', pct(spendP - timeP)], ['Projected over or under', num(proj - b)], ['Days left', num(daysLeft)], ['Status', spendP > timeP + 5 ? '<b style="color:#c9473d">Overspending</b>' : spendP < timeP - 5 ? '<b style="color:#d9922b">Underspending</b>' : '<b style="color:#2e9d62">On pace</b>']]) +
+      note('At the current daily rate you will finish at ' + num(proj) + ' against a budget of ' + num(b) + '.');
+  });
+
+L.add(C, 'abtest', 'A/B test significance', 'Lift, z-score, p-value and the sample you need before calling a winner.',
+  [{ k: 'na', l: 'Visitors in A', d: '5000' }, { k: 'ca', l: 'Conversions in A', d: '250' }, { k: 'nb', l: 'Visitors in B', d: '5000' }, { k: 'cb', l: 'Conversions in B', d: '300' }, { k: 'mde', l: 'Minimum detectable lift %', d: '10' }],
+  v => {
+    const na = Math.max(1, N(v.na)), ca = N(v.ca), nb = Math.max(1, N(v.nb)), cb = N(v.cb);
+    const pa = ca / na, pb = cb / nb, p = (ca + cb) / (na + nb);
+    const se = Math.sqrt(p * (1 - p) * (1 / na + 1 / nb)), z = se ? (pb - pa) / se : 0, pv = 2 * (1 - ncdf(Math.abs(z)));
+    const lift = pa ? (pb - pa) / pa * 100 : 0;
+    const mde = Math.max(0.0001, N(v.mde) / 100);
+    const nNeed = p ? Math.ceil(2 * p * (1 - p) * Math.pow(1.96 + 0.84, 2) / (p * mde * p * mde) * 1) : 0;
+    return kpi([['A rate', pct(pa * 100, 2)], ['B rate', pct(pb * 100, 2)], ['Relative lift', pct(lift, 2)], ['p-value', pv < 0.0001 ? '<0.0001' : num(pv, 4)], ['Significant', pv < 0.05 ? 'Yes at 95%' : 'No']]) +
+      tbl(['Check', 'Value'], [['Absolute difference', pct((pb - pa) * 100, 2)], ['z-score', num(z, 2)], ['Confidence', pct((1 - pv) * 100, 1)], ['Sample per arm for ' + pct(N(v.mde)) + ' lift', num(nNeed)], ['Verdict', pv < 0.05 && Math.abs(lift) > 0 ? '<b style="color:#2e9d62">Winner supported</b>' : '<b style="color:#d9922b">Keep running</b>']]) +
+      note('This is a two-sided test on independent proportions. Do not stop early when the result looks good; that inflates false positives.');
+  });
+
+L.add(C, 'tamsam', 'TAM, SAM and SOM', 'Size the total, serviceable and obtainable market from population and spend assumptions.',
+  [{ k: 'pop', l: 'Target population or accounts', d: '2000000' }, { k: 'pen', l: 'Share that needs the product %', d: '30' }, { k: 'spend', l: 'Annual spend per customer', d: '120' }, { k: 'sam', l: 'Serviceable share of that %', d: '40' }, { k: 'som', l: 'Share you can win in 3 years %', d: '5' }],
+  v => {
+    const pop = N(v.pop), pen = N(v.pen) / 100, spend = N(v.spend), samP = N(v.sam) / 100, somP = N(v.som) / 100;
+    const tam = pop * pen * spend, sam = tam * samP, som = sam * somP;
+    return kpi([['TAM', num(tam)], ['SAM', num(sam)], ['SOM', num(som)], ['Customers at SOM', num(som / (spend || 1))]]) +
+      tbl(['Layer', 'Value', 'Basis'], [['TAM', num(tam), num(pop * pen) + ' customers x ' + num(spend)], ['SAM', num(sam), pct(samP * 100) + ' of TAM'], ['SOM', num(som), pct(somP * 100) + ' of SAM']]) +
+      note('Use SOM for planning and TAM only for the story. A plan built on TAM will not survive contact with a sales team.');
+  });
+
+L.add(C, 'seo', 'SEO opportunity score', 'Rank keywords by volume, difficulty and current position to show where to invest first.',
+  [{ k: 'v', l: 'One line per keyword: keyword|monthly volume|difficulty 0-100|current position (0 if none)', d: 'strategy software|2400|55|12\nokr tool|880|35|4\ncascade planning|320|20|0', t: 't' }],
+  v => {
+    const r = rows(v.v).map(x => ({ k: x[0] || 'Keyword', vol: N(x[1]), diff: clamp(N(x[2]), 0, 100), pos: N(x[3]) })).filter(x => x.k);
+    if (!r.length) return note('Add at least one keyword: keyword|volume|difficulty|position.');
+    r.forEach(x => { const posBoost = x.pos === 0 ? 1.2 : x.pos <= 3 ? 0.4 : x.pos <= 10 ? 1 : x.pos <= 20 ? 0.8 : 0.5; x.score = x.vol * (1 - x.diff / 100) * posBoost; });
+    const sorted = r.slice().sort((a, b) => b.score - a.score), max = sorted[0].score || 1;
+    return kpi([['Keywords', r.length], ['Total volume', num(r.reduce((s, x) => s + x.vol, 0))], ['Best opportunity', E(sorted[0].k)], ['Score', num(sorted[0].score)]]) +
+      tbl(['Keyword', 'Volume', 'Difficulty', 'Position', 'Score', ''], sorted.map(x => [E(x.k), num(x.vol), num(x.diff), x.pos || '-', num(x.score), bar(x.score / max * 100, '#2e6bd9')])) +
+      note('High volume, low difficulty and a position just off page one usually gives the fastest return. A position of 0 means you do not rank yet.');
+  });
+
+L.add(C, 'email', 'Email list growth forecast', 'Project list size and revenue month by month from signups, churn and revenue per subscriber.',
+  [{ k: 'list', l: 'Current list size', d: '20000' }, { k: 'sign', l: 'New signups per month', d: '1200' }, { k: 'churn', l: 'Monthly churn %', d: '1.5' }, { k: 'months', l: 'Months', d: '12' }, { k: 'rps', l: 'Monthly revenue per subscriber', d: '1.2' }],
+  v => {
+    const n = clamp(Math.round(N(v.months)), 1, 60); let s = N(v.list), rs = [];
+    for (let i = 1; i <= n; i++) { const lost = s * N(v.churn) / 100; s = s - lost + N(v.sign); rs.push([i, num(lost), num(N(v.sign)), num(s), num(s * N(v.rps))]); }
+    return kpi([['Ending list', num(s)], ['Net growth', num(s - N(v.list))], ['Monthly revenue', num(s * N(v.rps))], ['Annual revenue', num(s * N(v.rps) * 12)]]) +
+      tbl(['Month', 'Churned', 'New', 'List', 'Revenue'], rs);
+  });
+
+L.add(C, 'attrib', 'Attribution comparison', 'Compare first-touch, last-touch and linear attribution to see which channels each model over- or under-credits.',
+  [{ k: 'v', l: 'One line per channel: name|first-touch conversions|last-touch conversions|linear conversions', d: 'Search|120|300|210\nSocial|260|150|205\nEmail|90|180|135', t: 't' }],
+  v => {
+    const r = rows(v.v).map(x => ({ n: x[0] || 'Channel', f: N(x[1]), l: N(x[2]), li: N(x[3]) })).filter(x => x.n);
+    if (!r.length) return note('Add at least one channel: name|first|last|linear.');
+    const tf = r.reduce((s, x) => s + x.f, 0), tl = r.reduce((s, x) => s + x.l, 0), tli = r.reduce((s, x) => s + x.li, 0);
+    return kpi([['First-touch total', num(tf)], ['Last-touch total', num(tl)], ['Linear total', num(tli)], ['Largest gap', E(r.slice().sort((a, b) => Math.abs(b.l - b.f) - Math.abs(a.l - a.f))[0].n)]]) +
+      tbl(['Channel', 'First', 'Last', 'Linear', 'Last vs first'], r.map(x => [E(x.n), num(x.f), num(x.l), num(x.li), '<span style="color:' + (x.l > x.f ? '#2e9d62' : '#c9473d') + '">' + (x.l - x.f > 0 ? '+' : '') + num(x.l - x.f) + '</span>'])) +
+      note('Last-touch flatters closing channels such as search. First-touch flatters discovery. Use linear or a data-driven model for budget decisions.');
+  });
+})();
+
+
+/* Strategy Cascade Lab - risk and governance tools */
+(() => {
+'use strict';
+const L = window.__lab; if (!L) return;
+const { E, N, num, pct, rows, tbl, kpi, bar, note, svg, ax, tx, clamp, col } = L;
+const C = 'Risk and governance';
+const band = s => s >= 20 ? ['Critical', '#c9473d'] : s >= 12 ? ['High', '#d9922b'] : s >= 6 ? ['Medium', '#c9a227'] : ['Low', '#2e9d62'];
+
+L.add(C, 'riskreg', 'Risk register scoring', 'Score inherent risk, apply control effectiveness and rank the residual risk.',
+  [{ k: 'v', l: 'One line per risk: risk|likelihood 1-5|impact 1-5|control effectiveness %|owner', d: 'Supplier failure|4|5|40|Ops\nCyber breach|3|5|60|IT\nKey person loss|3|4|25|HR', t: 't', r: 5 }],
+  v => {
+    const r = rows(v.v).map(x => { const l = clamp(N(x[1]), 1, 5), i = clamp(N(x[2]), 1, 5), c = clamp(N(x[3]), 0, 100); return { n: x[0] || 'Risk', l, i, c, own: x[4] || '', inh: l * i, res: l * i * (1 - c / 100) }; }).filter(x => x.n);
+    if (!r.length) return note('Add at least one risk: risk|likelihood|impact|control effectiveness|owner.');
+    r.sort((a, b) => b.res - a.res);
+    const crit = r.filter(x => x.res >= 12).length;
+    return kpi([['Risks', r.length], ['Residual above 12', crit], ['Highest residual', num(r[0].res, 1)], ['Average reduction', pct(r.reduce((s, x) => s + (1 - x.res / (x.inh || 1)), 0) / r.length * 100)]]) +
+      tbl(['Risk', 'L', 'I', 'Inherent', 'Control', 'Residual', 'Rating', 'Owner'], r.map(x => { const b = band(x.res); return [E(x.n), x.l, x.i, num(x.inh), pct(x.c), num(x.res, 1), '<b style="color:' + b[1] + '">' + b[0] + '</b>', E(x.own)]; })) +
+      note('Residual score = likelihood x impact x (1 - control effectiveness). Anything above 12 needs a named owner and a dated action.');
+  }, {
+  pre: () => { const a = window.__app; if (!a) return null; const out = []; a.ALLC.forEach(c => { const d = a.getC(c.id); if (String(d.rk || '').trim()) String(d.rk).split(/[;\n]+/).map(x => x.trim()).filter(x => x.length > 6).forEach(x => out.push(x + '|3|4|0|' + (d.owner || ''))); }); return out.length ? { v: out.slice(0, 20).join('\n') } : null; },
+  push: v => { const list = rows(v.v).map(x => (x[0] || '') + ' (residual ' + (clamp(N(x[1]), 1, 5) * clamp(N(x[2]), 1, 5) * (1 - clamp(N(x[3]), 0, 100) / 100)).toFixed(1) + ')').filter(x => x.length > 4); return L.pushRisks(list); }
+});
+
+L.add(C, 'mcpert', 'Monte Carlo schedule (PERT)', 'Estimate project duration from optimistic, likely and pessimistic task estimates.',
+  [{ k: 'v', l: 'One line per task: task|optimistic|likely|pessimistic', d: 'Design|5|8|14\nBuild|10|16|28\nTest|4|6|12\nLaunch|1|2|5', t: 't' }],
+  v => {
+    const r = rows(v.v).map(x => { const o = N(x[1]), m = N(x[2]), p = N(x[3]); return { n: x[0] || 'Task', o, m, p, mean: (o + 4 * m + p) / 6, sd: Math.max(0, (p - o) / 6) }; }).filter(x => x.n);
+    if (!r.length) return note('Add at least one task: task|optimistic|likely|pessimistic.');
+    const mean = r.reduce((s, x) => s + x.mean, 0), sd = Math.sqrt(r.reduce((s, x) => s + x.sd * x.sd, 0));
+    return kpi([['Expected duration', num(mean, 1) + ' days'], ['P50', num(mean, 1) + ' days'], ['P80', num(mean + 0.8416 * sd, 1) + ' days'], ['P90', num(mean + 1.2816 * sd, 1) + ' days']]) +
+      tbl(['Task', 'Optimistic', 'Likely', 'Pessimistic', 'PERT mean', 'Std dev'], r.map(x => [E(x.n), num(x.o, 1), num(x.m, 1), num(x.p, 1), num(x.mean, 1), num(x.sd, 1)])) +
+      note('The P80 figure is the date to commit to. The PERT mean is the number to plan with, not the likely estimate.');
+  });
+
+L.add(C, 'decmatrix', 'Weighted decision matrix', 'Score options against weighted criteria and show the winner and the gaps.',
+  [{ k: 'crit', l: 'Criteria: name|weight', d: 'Cost|30\nSpeed|25\nQuality|45', t: 't', r: 3 }, { k: 'opts', l: 'Options: name|score for each criterion (0-10)', d: 'Build|6|5|9\nBuy|9|8|6\nPartner|7|7|7', t: 't', r: 4 }],
+  v => {
+    const crit = rows(v.crit).map(x => ({ n: x[0] || 'Criterion', w: N(x[1]) })).filter(x => x.n);
+    const opts = rows(v.opts).map(x => ({ n: x[0] || 'Option', s: x.slice(1).map(N) })).filter(x => x.n);
+    if (!crit.length || !opts.length) return note('Add at least one criterion and one option.');
+    const tw = crit.reduce((s, x) => s + x.w, 0) || 1;
+    opts.forEach(o => { o.score = crit.reduce((s, c, i) => s + (o.s[i] || 0) * c.w, 0) / tw; });
+    opts.sort((a, b) => b.score - a.score);
+    return kpi([['Options', opts.length], ['Winner', E(opts[0].n)], ['Score', num(opts[0].score, 2)], ['Lead', num(opts[0].score - (opts[1] ? opts[1].score : 0), 2)]]) +
+      tbl(['Option', ...crit.map(c => E(c.n) + ' (' + num(c.w) + '%)'), 'Weighted score', ''], opts.map(o => [E(o.n), ...o.s.slice(0, crit.length).map(num), '<b>' + num(o.score, 2) + '</b>', bar(o.score * 10)])) +
+      note('Weights total ' + num(tw) + '%. If the leader is within 0.5 points of the runner-up, the decision is effectively a tie and should turn on risk or reversibility.');
+  });
+
+L.add(C, 'powerint', 'Stakeholder power and interest', 'Place stakeholders in four quadrants and get the engagement approach for each.',
+  [{ k: 'v', l: 'One line per stakeholder: name|power 1-10|interest 1-10', d: 'CEO|9|9\nCFO|8|6\nHead of Sales|6|9\nWorks council|7|4\nSupplier|4|3', t: 't' }],
+  v => {
+    const r = rows(v.v).map(x => ({ n: x[0] || 'Stakeholder', p: clamp(N(x[1]), 1, 10), i: clamp(N(x[2]), 1, 10) })).filter(x => x.n);
+    if (!r.length) return note('Add at least one stakeholder: name|power|interest.');
+    const quad = x => x.p >= 5 && x.i >= 5 ? ['Manage closely', '#c9473d'] : x.p >= 5 ? ['Keep satisfied', '#d9922b'] : x.i >= 5 ? ['Keep informed', '#2e6bd9'] : ['Monitor', '#6b7280'];
+    const W = 320, H = 260, pad = 34, X = p => pad + (W - 2 * pad) * (p - 1) / 9, Y = i => H - pad - (H - 2 * pad) * (i - 1) / 9;
+    return kpi([['Stakeholders', r.length], ['Manage closely', r.filter(x => x.p >= 5 && x.i >= 5).length], ['Keep satisfied', r.filter(x => x.p >= 5 && x.i < 5).length], ['Keep informed', r.filter(x => x.p < 5 && x.i >= 5).length]]) +
+      svg(W, H, '<rect x="' + X(5) + '" y="12" width="' + (W - pad - X(5)) + '" height="' + (Y(5) - 12) + '" fill="rgba(201,71,61,.08)"/>' + ax(X(5), 12, X(5), H - pad) + ax(pad, Y(5), W - pad, Y(5)) + tx(W / 2, H - 6, 'interest') + tx(8, 16, 'power', 'start') + r.map(x => '<circle cx="' + X(x.p) + '" cy="' + Y(x.i) + '" r="4.5" fill="' + quad(x)[1] + '"/><text x="' + (X(x.p) + 7) + '" y="' + (Y(x.i) + 3) + '" font-size="8.5" fill="var(--ink)">' + E(x.n.slice(0, 16)) + '</text>').join('')) +
+      tbl(['Stakeholder', 'Power', 'Interest', 'Approach'], r.map(x => [E(x.n), x.p, x.i, '<b style="color:' + quad(x)[1] + '">' + quad(x)[0] + '</b>'])) +
+      note('High power and high interest need a named relationship owner and a regular cadence. Low power and low interest only need monitoring.');
+  });
+
+L.add(C, 'compcal', 'Compliance calendar', 'Upcoming obligations with days remaining and the next recurrence.',
+  [{ k: 'v', l: 'One line per obligation: obligation|due YYYY-MM-DD|frequency (once/monthly/quarterly/yearly)|owner', d: 'VAT return|2026-11-07|monthly|Finance\nBoard pack|2026-12-15|quarterly|CEO\nAudit filing|2027-03-31|yearly|Finance', t: 't' }],
+  v => {
+    const r = rows(v.v).map(x => { const d = x[1] || '', dd = L.days(d); return { n: x[0] || 'Obligation', d, f: (x[2] || 'once').toLowerCase(), own: x[3] || '', dd }; }).filter(x => x.n);
+    if (!r.length) return note('Add at least one obligation: obligation|due date|frequency|owner.');
+    r.sort((a, b) => (a.dd == null ? 9e9 : a.dd) - (b.dd == null ? 9e9 : b.dd));
+    const late = r.filter(x => x.dd != null && x.dd < 0).length, soon = r.filter(x => x.dd != null && x.dd >= 0 && x.dd <= 30).length;
+    return kpi([['Obligations', r.length], ['Overdue', late], ['Due within 30 days', soon], ['Next due', r[0] ? (r[0].d || '-') : '-']]) +
+      tbl(['Obligation', 'Due', 'Days', 'Frequency', 'Owner', 'Status'], r.map(x => [E(x.n), E(x.d), x.dd == null ? '-' : num(x.dd), E(x.f), E(x.own), x.dd == null ? '' : x.dd < 0 ? '<b style="color:#c9473d">Overdue</b>' : x.dd <= 30 ? '<b style="color:#d9922b">Due soon</b>' : '<span style="color:#2e9d62">On track</span>'])) +
+      note('Dates are compared with today. Recurring obligations are listed once; the status reflects the current due date.');
+  }, {
+  pre: () => { const a = window.__app; if (!a) return null; const out = []; a.ALLC.forEach(c => { const d = a.getC(c.id); if (d.due) out.push((c.short || c.title) + '|' + d.due + '|once|' + (d.owner || '')); }); return out.length ? { v: out.slice(0, 25).join('\n') } : null; }
+});
+
+L.add(C, 'vendorrisk', 'Vendor risk score', 'Weighted vendor criticality across data, finance, security and contract exposure.',
+  [{ k: 'v', l: 'One line per vendor: vendor|criticality 1-5|data access 1-5|financial 1-5|security 1-5|contract 1-5', d: 'Cloud host|5|4|2|5|4\nAgency|2|2|3|2|2\nPayroll|4|5|4|4|3', t: 't' }],
+  v => {
+    const r = rows(v.v).map(x => { const s = x.slice(1, 6).map(n => clamp(N(n), 1, 5)); return { n: x[0] || 'Vendor', s, sc: s[0] * 0.3 + s[1] * 0.25 + s[2] * 0.15 + s[3] * 0.2 + s[4] * 0.1 }; }).filter(x => x.n);
+    if (!r.length) return note('Add at least one vendor with five 1-5 scores.');
+    r.sort((a, b) => b.sc - a.sc);
+    const tier = s => s >= 4 ? ['Tier 1', '#c9473d', 'Board visibility, annual audit, exit plan'] : s >= 3 ? ['Tier 2', '#d9922b', 'Annual review, security questionnaire'] : ['Tier 3', '#2e9d62', 'Light-touch review'];
+    return kpi([['Vendors', r.length], ['Tier 1', r.filter(x => x.sc >= 4).length], ['Highest score', num(r[0].sc, 2)], ['Average', num(r.reduce((s, x) => s + x.sc, 0) / r.length, 2)]]) +
+      tbl(['Vendor', 'Criticality', 'Data', 'Financial', 'Security', 'Contract', 'Score', 'Tier'], r.map(x => { const t = tier(x.sc); return [E(x.n), ...x.s, num(x.sc, 2), '<b style="color:' + t[1] + '">' + t[0] + '</b>']; })) +
+      note('Weights: criticality 30%, data 25%, security 20%, financial 15%, contract 10%. Tier 1 vendors need an exit plan and an annual review.');
+  }, {
+  push: v => { const list = rows(v.v).map(x => { const s = x.slice(1, 6).map(n => clamp(N(n), 1, 5)); const sc = s[0] * 0.3 + s[1] * 0.25 + s[2] * 0.15 + s[3] * 0.2 + s[4] * 0.1; return (x[0] || '') + ' (vendor score ' + sc.toFixed(2) + ', tier ' + (sc >= 4 ? 1 : sc >= 3 ? 2 : 3) + ')'; }).filter(x => x.length > 4); return L.pushRisks(list); }
+});
+
+L.add(C, 'scen', 'Scenario planning', 'Revenue, gross profit and the change against base for best, base and worst cases.',
+  [{ k: 'rev', l: 'Base revenue', d: '10000000' }, { k: 'm', l: 'Base gross margin %', d: '35' }, { k: 'br', l: 'Best case revenue change %', d: '12' }, { k: 'bm', l: 'Best case margin change (points)', d: '2' }, { k: 'wr', l: 'Worst case revenue change %', d: '-18' }, { k: 'wm', l: 'Worst case margin change (points)', d: '-6' }],
+  v => {
+    const rev = N(v.rev), m = N(v.m), rowsO = [
+      ['Best', rev * (1 + N(v.br) / 100), m + N(v.bm)],
+      ['Base', rev, m],
+      ['Worst', rev * (1 + N(v.wr) / 100), m + N(v.wm)]
+    ].map(x => ({ n: x[0], r: x[1], m: x[2], gp: x[1] * x[2] / 100 }));
+    const base = rowsO[1];
+    return kpi([['Best gross profit', num(rowsO[0].gp)], ['Base gross profit', num(base.gp)], ['Worst gross profit', num(rowsO[2].gp)], ['Worst downside', num(rowsO[2].gp - base.gp)]]) +
+      tbl(['Scenario', 'Revenue', 'Margin', 'Gross profit', 'vs base'], rowsO.map(x => [E(x.n), num(x.r), pct(x.m), num(x.gp), '<span style="color:' + (x.gp >= base.gp ? '#2e9d62' : '#c9473d') + '">' + num(x.gp - base.gp) + '</span>'])) +
+      note('The worst case is the number to fund against. If the worst case breaks a covenant or the cash buffer, reduce fixed costs now.');
+  });
+
+L.add(C, 'premortem', 'Pre-mortem prioritisation', 'Rank failure modes by risk priority number and surface the ones to fix first.',
+  [{ k: 'v', l: 'One line per failure mode: failure|likelihood 1-5|impact 1-5|detectability 1-5 (5 = hard to detect)', d: 'Demand below plan|4|5|3\nKey hire leaves|3|4|4\nSupplier misses launch|3|5|2\nRegulator blocks|2|5|5', t: 't' }],
+  v => {
+    const r = rows(v.v).map(x => { const l = clamp(N(x[1]), 1, 5), i = clamp(N(x[2]), 1, 5), d = clamp(N(x[3]), 1, 5); return { n: x[0] || 'Failure', l, i, d, rpn: l * i * d }; }).filter(x => x.n);
+    if (!r.length) return note('Add at least one failure mode: failure|likelihood|impact|detectability.');
+    r.sort((a, b) => b.rpn - a.rpn);
+    return kpi([['Failure modes', r.length], ['Top RPN', r[0].rpn], ['Above 60', r.filter(x => x.rpn >= 60).length], ['Top risk', E(r[0].n)]]) +
+      tbl(['Failure mode', 'L', 'I', 'D', 'RPN', 'Priority'], r.map(x => [E(x.n), x.l, x.i, x.d, '<b>' + x.rpn + '</b>', x.rpn >= 60 ? '<b style="color:#c9473d">Act now</b>' : x.rpn >= 30 ? '<b style="color:#d9922b">Plan a control</b>' : '<span style="color:#2e9d62">Monitor</span>'])) +
+      note('RPN = likelihood x impact x detectability. A high score with high detectability is still dangerous because you will not see it coming.');
+  }, {
+  push: v => { const list = rows(v.v).map(x => (x[0] || '') + ' (pre-mortem RPN ' + (clamp(N(x[1]), 1, 5) * clamp(N(x[2]), 1, 5) * clamp(N(x[3]), 1, 5)) + ')').filter(x => x.length > 4); return L.pushRisks(list); }
+});
+})();
+
+
+/* Strategy Cascade Lab - operations and supply tools */
+(() => {
+'use strict';
+const L = window.__lab; if (!L) return;
+const { E, N, num, pct, rows, tbl, kpi, bar, note, svg, ax, tx, clamp, col } = L;
+const C = 'Operations and supply';
+
+L.add(C, 'capacity', 'Capacity planning', 'Available capacity, the gap to demand, and the hours or people needed to close it.',
+  [{ k: 'demand', l: 'Demand in units', d: '12000' }, { k: 'people', l: 'People available', d: '10' }, { k: 'hours', l: 'Productive hours per person per period', d: '140' }, { k: 'rate', l: 'Units per hour', d: '10' }, { k: 'util', l: 'Planned utilisation %', d: '85' }, { k: 'cost', l: 'Cost per extra hour', d: '35' }],
+  v => {
+    const demand = N(v.demand), people = N(v.people), hours = N(v.hours), rate = N(v.rate), util = N(v.util) / 100, cost = N(v.cost);
+    const capacity = people * hours * rate * util, gap = demand - capacity, hoursNeed = rate > 0 ? gap / rate : 0, peopleNeed = hours > 0 ? hoursNeed / hours : 0;
+    return kpi([['Capacity', num(capacity)], ['Demand', num(demand)], ['Gap', num(gap)], ['Extra hours', num(Math.max(0, hoursNeed))], ['Extra people', num(Math.max(0, peopleNeed), 1)], ['Extra cost', num(Math.max(0, hoursNeed) * cost)]]) +
+      tbl(['Check', 'Value'], [['Utilisation', pct(util * 100)], ['Load', capacity ? pct(demand / capacity * 100) : 'n/a'], ['Status', gap > 0 ? '<b style="color:#c9473d">Short of capacity</b>' : '<b style="color:#2e9d62">Capacity covers demand</b>']]) +
+      note('If the gap is more than 15% of capacity, adding people is usually cheaper and safer than overtime.');
+  });
+
+L.add(C, 'pce', 'Process cycle efficiency', 'The share of lead time that adds value, and how much waste to remove to hit a target.',
+  [{ k: 'va', l: 'Value-added time (minutes)', d: '30' }, { k: 'lt', l: 'Total lead time (minutes)', d: '600' }, { k: 'target', l: 'Target efficiency %', d: '25' }],
+  v => {
+    const va = N(v.va), lt = N(v.lt), t = N(v.target) / 100;
+    const pce = lt ? va / lt * 100 : 0, waste = Math.max(0, lt - va), ltNeed = t > 0 ? va / t : NaN;
+    return kpi([['Cycle efficiency', pct(pce, 2)], ['Waste time', num(waste) + ' min'], ['Lead time to target', isFinite(ltNeed) ? num(ltNeed) + ' min' : 'n/a'], ['Waste to remove', isFinite(ltNeed) ? num(Math.max(0, lt - ltNeed)) + ' min' : 'n/a']]) +
+      tbl(['Metric', 'Value'], [['Value-added share', pct(pce, 2)], ['Non-value-added share', pct(100 - pce, 2)], ['Lead time', num(lt) + ' min'], ['Verdict', pce >= 25 ? '<b style="color:#2e9d62">Efficient for a service process</b>' : '<b style="color:#d9922b">Most of the time is waiting</b>']]) +
+      note('Most service processes run at 5-25% efficiency. The gain comes from removing waiting and handoffs, not from working faster.');
+  });
+
+L.add(C, 'eoq', 'Economic order quantity', 'The order size that minimises ordering plus holding cost, and the resulting cycle.',
+  [{ k: 'd', l: 'Annual demand (units)', d: '24000' }, { k: 'o', l: 'Cost per order', d: '150' }, { k: 'h', l: 'Holding cost per unit per year', d: '8' }, { k: 'days', l: 'Working days per year', d: '250' }],
+  v => {
+    const d = N(v.d), o = N(v.o), h = N(v.h), days = Math.max(1, N(v.days));
+    const eoq = h > 0 ? Math.sqrt(2 * d * o / h) : NaN, orders = eoq ? d / eoq : NaN, cycle = orders ? days / orders : NaN;
+    const orderCost = orders ? orders * o : 0, holdCost = eoq ? eoq / 2 * h : 0;
+    return kpi([['EOQ', isFinite(eoq) ? num(eoq) + ' units' : 'n/a'], ['Orders per year', isFinite(orders) ? num(orders, 1) : 'n/a'], ['Days between orders', isFinite(cycle) ? num(cycle, 1) : 'n/a'], ['Total annual cost', num(orderCost + holdCost)]]) +
+      tbl(['Cost', 'Annual'], [['Ordering', num(orderCost)], ['Holding', num(holdCost)], ['<b>Total</b>', '<b>' + num(orderCost + holdCost) + '</b>']]) +
+      note('At EOQ the ordering cost equals the holding cost. Round to the supplier pack size and re-check if demand changes by more than 20%.');
+  });
+
+L.add(C, 'supplier', 'Supplier scorecard', 'Weighted quality, delivery, cost and responsiveness with a grade and an action.',
+  [{ k: 'v', l: 'One line per supplier: supplier|quality %|delivery %|cost score 1-5|responsiveness 1-5', d: 'Alpha|99|96|4|5\nBeta|94|88|3|3\nGamma|88|75|5|2', t: 't' }],
+  v => {
+    const r = rows(v.v).map(x => { const q = clamp(N(x[1]), 0, 100), d = clamp(N(x[2]), 0, 100), c = clamp(N(x[3]), 1, 5), s = clamp(N(x[4]), 1, 5); return { n: x[0] || 'Supplier', q, d, c, s, sc: q * 0.4 + d * 0.3 + c * 20 * 0.15 + s * 20 * 0.15 }; }).filter(x => x.n);
+    if (!r.length) return note('Add at least one supplier: supplier|quality|delivery|cost|responsiveness.');
+    r.sort((a, b) => b.sc - a.sc);
+    const grade = s => s >= 90 ? ['A', '#2e9d62', 'Strategic partner'] : s >= 75 ? ['B', '#2e6bd9', 'Approved'] : s >= 60 ? ['C', '#d9922b', 'Improvement plan'] : ['D', '#c9473d', 'Replace or escalate'];
+    return kpi([['Suppliers', r.length], ['Grade A', r.filter(x => x.sc >= 90).length], ['Average score', num(r.reduce((s, x) => s + x.sc, 0) / r.length, 1)], ['Best', E(r[0].n)]]) +
+      tbl(['Supplier', 'Quality', 'Delivery', 'Cost', 'Responsive', 'Score', 'Grade', 'Action'], r.map(x => { const g = grade(x.sc); return [E(x.n), pct(x.q), pct(x.d), x.c, x.s, num(x.sc, 1), '<b style="color:' + g[1] + '">' + g[0] + '</b>', g[2]]; })) +
+      note('Weights: quality 40%, delivery 30%, cost 15%, responsiveness 15%. A grade D supplier on a critical line needs a second source.');
+  });
+
+L.add(C, 'critpath', 'Critical path (CPM)', 'Forward and backward pass to find the critical path, total float and the project duration.',
+  [{ k: 'v', l: 'One line per task: id|duration|depends on (comma separated ids)', d: 'A|3|\nB|5|A\nC|4|A\nD|2|B,C\nE|3|D', t: 't' }],
+  v => {
+    const r = rows(v.v).map(x => ({ id: x[0] || '?', dur: Math.max(0, N(x[1])), dep: String(x[2] || '').split(',').map(s => s.trim()).filter(Boolean) })).filter(x => x.id);
+    if (!r.length) return note('Add at least one task: id|duration|depends on.');
+    const by = {}; r.forEach(x => by[x.id] = x);
+    r.forEach(x => { x.es = 0; x.ef = x.dur; x.vis = 0; });
+    let changed = true, guard = 0;
+    while (changed && guard++ < 500) {
+      changed = false;
+      r.forEach(x => { const es = x.dep.reduce((s, d) => Math.max(s, by[d] ? by[d].ef : 0), 0); if (es !== x.es) { x.es = es; x.ef = es + x.dur; changed = true; } });
+    }
+    const end = r.reduce((s, x) => Math.max(s, x.ef), 0);
+    r.forEach(x => { x.lf = end; x.ls = end - x.dur; });
+    changed = true; guard = 0;
+    while (changed && guard++ < 500) {
+      changed = false;
+      r.forEach(x => {
+        const succ = r.filter(y => y.dep.includes(x.id));
+        const lf = succ.length ? Math.min(...succ.map(y => y.ls)) : end;
+        const ls = lf - x.dur;
+        if (lf !== x.lf || ls !== x.ls) { x.lf = lf; x.ls = ls; changed = true; }
+      });
+    }
+    r.forEach(x => x.slack = x.ls - x.es);
+    const crit = r.filter(x => Math.abs(x.slack) < 0.001).map(x => x.id);
+    return kpi([['Project duration', num(end) + ' days'], ['Tasks', r.length], ['Critical tasks', crit.length], ['Critical path', crit.join(' > ') || '-']]) +
+      tbl(['Task', 'Duration', 'ES', 'EF', 'LS', 'LF', 'Float', 'Critical'], r.map(x => [E(x.id), num(x.dur), num(x.es), num(x.ef), num(x.ls), num(x.lf), num(x.slack), Math.abs(x.slack) < 0.001 ? '<b style="color:#c9473d">Yes</b>' : ''])) +
+      note('Any delay on a critical task delays the project. Tasks with float can move without affecting the end date.');
+  });
+
+L.add(C, 'sla', 'Queue and service level (Erlang C)', 'Estimate wait time and service level for a queue with a given arrival rate and team size.',
+  [{ k: 'arr', l: 'Contacts per hour', d: '120' }, { k: 'aht', l: 'Average handling time (minutes)', d: '6' }, { k: 'agents', l: 'Agents available', d: '14' }, { k: 'target', l: 'Target answer time (seconds)', d: '30' }],
+  v => {
+    const arr = Math.max(0, N(v.arr)), aht = Math.max(0.1, N(v.aht)), c = Math.max(1, Math.round(N(v.agents))), target = Math.max(1, N(v.target));
+    const a = arr * aht / 60, rho = a / c;
+    if (rho >= 1) return note('<b>The team is overloaded.</b> Offered load is ' + num(a, 2) + ' erlangs against ' + c + ' agents, so the queue grows without limit.');
+    let b = 1; for (let i = 1; i <= c; i++) b = (a * b) / (i + a * b);
+    const ec = b / (1 - rho * (1 - b));
+    const wq = ec * aht / (c * (1 - rho)) * 60;
+    const sl = 1 - ec * Math.exp(-(c - a) * (target / 60) / aht);
+    return kpi([['Utilisation', pct(rho * 100)], ['Probability of waiting', pct(ec * 100)], ['Average wait', num(wq, 1) + ' sec'], ['Service level in ' + target + ' sec', pct(sl * 100)]]) +
+      tbl(['Check', 'Value'], [['Offered load', num(a, 2) + ' erlangs'], ['Agents', c], ['Average speed of answer', num(wq, 1) + ' sec'], ['Status', sl >= 0.8 ? '<b style="color:#2e9d62">Meets an 80/30 target</b>' : '<b style="color:#d9922b">Below an 80/30 target</b>']]) +
+      note('Erlang C assumes random arrivals and no abandonments. Above 85% utilisation, wait times rise steeply for every extra point of load.');
+  });
+
+L.add(C, 'copq', 'Cost of poor quality', 'Total failure and appraisal cost, its share of revenue, and the Pareto of causes.',
+  [{ k: 'rev', l: 'Revenue', d: '10000000' }, { k: 'v', l: 'One line per category: category|annual cost', d: 'Rework|180000\nWarranty|120000\nScrap|60000\nComplaints|40000\nInspection|90000', t: 't' }],
+  v => {
+    const r = rows(v.v).map(x => ({ n: x[0] || 'Category', c: N(x[1]) })).filter(x => x.c);
+    if (!r.length) return note('Add at least one cost category: category|annual cost.');
+    r.sort((a, b) => b.c - a.c);
+    const total = r.reduce((s, x) => s + x.c, 0), rev = N(v.rev), max = r[0].c;
+    let cum = 0;
+    return kpi([['Total cost', num(total)], ['Share of revenue', rev ? pct(total / rev * 100, 2) : 'n/a'], ['Largest cause', E(r[0].n)], ['Causes', r.length]]) +
+      tbl(['Category', 'Cost', 'Share', 'Cumulative', ''], r.map(x => { cum += x.c; return [E(x.n), num(x.c), pct(x.c / total * 100), pct(cum / total * 100), bar(x.c / max * 100, '#c9473d')]; })) +
+      note('Fix the first two categories first: they usually carry most of the cost. Inspection is a prevention cost, not a failure cost.');
+  });
+
+L.add(C, 'invturn', 'Inventory turns and days', 'Turns, days of inventory and the cash released by hitting a turns target.',
+  [{ k: 'cogs', l: 'Annual cost of goods sold', d: '6000000' }, { k: 'inv', l: 'Average inventory value', d: '750000' }, { k: 'target', l: 'Target turns per year', d: '10' }],
+  v => {
+    const cogs = N(v.cogs), inv = Math.max(1, N(v.inv)), target = Math.max(0.1, N(v.target));
+    const turns = cogs / inv, dio = turns ? 365 / turns : NaN, invTarget = cogs / target, release = inv - invTarget;
+    return kpi([['Turns per year', num(turns, 2)], ['Days of inventory', num(dio, 1)], ['Target inventory', num(invTarget)], ['Cash released', num(release)]]) +
+      tbl(['Metric', 'Value'], [['Inventory value', num(inv)], ['Cost of goods sold', num(cogs)], ['Turns', num(turns, 2)], ['Days', num(dio, 1)], ['Verdict', turns >= target ? '<b style="color:#2e9d62">At or above target</b>' : '<b style="color:#d9922b">Below target</b>']]) +
+      note('Raising turns from ' + num(turns, 1) + ' to ' + num(target, 1) + ' would free ' + num(Math.max(0, release)) + ' of cash, before any write-downs.');
+  });
+})();
+
+
+/* Strategy Cascade Lab - people, data and technology tools */
+(() => {
+'use strict';
+const L = window.__lab; if (!L) return;
+const { E, N, num, pct, rows, tbl, kpi, bar, note, svg, ax, tx, clamp, col } = L;
+
+/* ---------------- people and organisation ---------------- */
+const P = 'People and organisation';
+
+L.add(P, 'headcount', 'Headcount plan and cost', 'Fully loaded cost by role, monthly and annual totals, and the share of each role.',
+  [{ k: 'v', l: 'One line per role: role|headcount|annual salary|benefits %', d: 'Engineering|12|95000|22\nSales|8|70000|18\nOperations|6|55000|20', t: 't' }],
+  v => {
+    const r = rows(v.v).map(x => ({ n: x[0] || 'Role', h: N(x[1]), s: N(x[2]), b: N(x[3]) })).filter(x => x.n);
+    if (!r.length) return note('Add at least one role: role|headcount|salary|benefits %.');
+    r.forEach(x => x.cost = x.h * x.s * (1 + x.b / 100));
+    const total = r.reduce((s, x) => s + x.cost, 0), heads = r.reduce((s, x) => s + x.h, 0);
+    return kpi([['Headcount', num(heads)], ['Annual cost', num(total)], ['Monthly cost', num(total / 12)], ['Average cost per head', num(total / (heads || 1))]]) +
+      tbl(['Role', 'Heads', 'Salary', 'Benefits', 'Loaded cost', 'Share'], r.map(x => [E(x.n), num(x.h), num(x.s), pct(x.b), num(x.cost), pct(x.cost / total * 100)])) +
+      note('Fully loaded cost includes benefits, payroll taxes and employer contributions. Use it for budget, not base salary.');
+  });
+
+L.add(P, 'attrition', 'Attrition cost', 'The annual cost of leavers including replacement, hiring and lost productivity.',
+  [{ k: 'hc', l: 'Headcount', d: '200' }, { k: 'att', l: 'Annual attrition %', d: '14' }, { k: 'sal', l: 'Average salary', d: '65000' }, { k: 'repl', l: 'Replacement cost % of salary', d: '20' }, { k: 'ramp', l: 'Ramp months at reduced output', d: '3' }, { k: 'prod', l: 'Productivity loss during ramp %', d: '50' }],
+  v => {
+    const hc = N(v.hc), att = N(v.att) / 100, sal = N(v.sal), repl = N(v.repl) / 100, ramp = N(v.ramp), prod = N(v.prod) / 100;
+    const leavers = hc * att, repCost = leavers * sal * repl, prodCost = leavers * sal / 12 * ramp * prod, total = repCost + prodCost;
+    return kpi([['Leavers per year', num(leavers, 1)], ['Replacement cost', num(repCost)], ['Productivity loss', num(prodCost)], ['Total cost', num(total)], ['Cost per leaver', num(leavers ? total / leavers : 0)]]) +
+      tbl(['Component', 'Annual cost'], [['Recruitment and onboarding', num(repCost)], ['Lost output during ramp', num(prodCost)], ['<b>Total</b>', '<b>' + num(total) + '</b>'], ['Share of payroll', pct(hc * sal ? total / (hc * sal) * 100 : 0)]]) +
+      note('A 1 point fall in attrition at this headcount saves ' + num(hc * 0.01 * (sal * repl + sal / 12 * ramp * prod)) + ' a year.');
+  });
+
+L.add(P, 'skills', 'Skills gap matrix', 'Weighted gap between required and current capability, ranked by priority.',
+  [{ k: 'v', l: 'One line per skill: skill|required 1-5|current 1-5|people affected', d: 'Data analysis|4|2|18\nNegotiation|4|3|9\nAI literacy|3|1|40\nProject management|4|4|12', t: 't' }],
+  v => {
+    const r = rows(v.v).map(x => ({ n: x[0] || 'Skill', req: clamp(N(x[1]), 1, 5), cur: clamp(N(x[2]), 1, 5), p: N(x[3]) })).filter(x => x.n);
+    if (!r.length) return note('Add at least one skill: skill|required|current|people affected.');
+    r.forEach(x => { x.gap = Math.max(0, x.req - x.cur); x.w = x.gap * (x.p || 1); });
+    r.sort((a, b) => b.w - a.w);
+    const max = r[0].w || 1, totalGap = r.reduce((s, x) => s + x.gap, 0);
+    return kpi([['Skills', r.length], ['Total gap points', num(totalGap)], ['Largest gap', E(r[0].n)], ['At or above target', r.filter(x => x.gap === 0).length]]) +
+      tbl(['Skill', 'Required', 'Current', 'Gap', 'People', 'Priority', ''], r.map(x => [E(x.n), x.req, x.cur, x.gap ? '<b style="color:#c9473d">' + x.gap + '</b>' : '0', num(x.p), num(x.w), bar(x.w / max * 100, '#7a5cd6')])) +
+      note('Priority is gap x people affected. Fix the top two first; a broad programme across every skill rarely lands.');
+  });
+
+L.add(P, 'compband', 'Compensation band checker', 'Compa-ratio and position in band for each role, with flags outside the range.',
+  [{ k: 'v', l: 'One line per role: role|band min|band mid|band max|actual salary', d: 'Analyst|45000|55000|65000|52000\nManager|70000|85000|100000|104000\nDirector|110000|135000|160000|128000', t: 't' }],
+  v => {
+    const r = rows(v.v).map(x => { const min = N(x[1]), mid = N(x[2]), max = N(x[3]), a = N(x[4]); return { n: x[0] || 'Role', min, mid, max, a, cr: mid ? a / mid * 100 : NaN }; }).filter(x => x.n);
+    if (!r.length) return note('Add at least one role: role|min|mid|max|actual.');
+    const flag = x => x.a < x.min ? ['Below band', '#c9473d'] : x.a > x.max ? ['Above band', '#d9922b'] : ['In band', '#2e9d62'];
+    return kpi([['Roles', r.length], ['Below band', r.filter(x => x.a < x.min).length], ['Above band', r.filter(x => x.a > x.max).length], ['Average compa-ratio', pct(r.reduce((s, x) => s + (x.cr || 0), 0) / r.length)]]) +
+      tbl(['Role', 'Min', 'Mid', 'Max', 'Actual', 'Compa-ratio', 'Position', 'Status'], r.map(x => { const f = flag(x); return [E(x.n), num(x.min), num(x.mid), num(x.max), num(x.a), pct(x.cr), pct((x.a - x.min) / ((x.max - x.min) || 1) * 100), '<b style="color:' + f[1] + '">' + f[0] + '</b>']; })) +
+      note('Compa-ratio is salary divided by band midpoint. A healthy range is 80-120%. Anyone above the maximum needs a documented exception.');
+  });
+
+L.add(P, 'engage', 'Engagement driver scoring', 'Weighted engagement score and the drivers dragging it down.',
+  [{ k: 'v', l: 'One line per driver: driver|score 0-10|weight %', d: 'Purpose|8|20\nManager|6|25\nGrowth|4|20\nRecognition|5|15\nWorkload|3|20', t: 't' }],
+  v => {
+    const r = rows(v.v).map(x => ({ n: x[0] || 'Driver', s: clamp(N(x[1]), 0, 10), w: Math.max(0, N(x[2])) })).filter(x => x.n);
+    if (!r.length) return note('Add at least one driver: driver|score|weight.');
+    const tw = r.reduce((s, x) => s + x.w, 0) || 1, score = r.reduce((s, x) => s + x.s * x.w, 0) / tw;
+    const sorted = r.slice().sort((a, b) => a.s - b.s);
+    return kpi([['Weighted score', num(score, 2) + ' / 10'], ['Strongest', E(r.slice().sort((a, b) => b.s - a.s)[0].n)], ['Weakest', E(sorted[0].n)], ['Weights', num(tw) + '%']]) +
+      tbl(['Driver', 'Score', 'Weight', 'Contribution', ''], r.map(x => [E(x.n), num(x.s, 1), pct(x.w), num(x.s * x.w / tw, 2), bar(x.s * 10, x.s < 5 ? '#c9473d' : '#2e9d62')])) +
+      note('Fix the lowest-scoring high-weight driver first. Raising the weakest driver by 2 points would lift the total by ' + num(2 * sorted[0].w / tw, 2) + '.');
+  });
+
+L.add(P, 'hirefunnel', 'Hiring funnel', 'Stage-by-stage hiring conversion, time to hire and cost per hire.',
+  [{ k: 'app', l: 'Applicants', d: '400' }, { k: 'scr', l: 'Application to screen %', d: '40' }, { k: 'int', l: 'Screen to interview %', d: '50' }, { k: 'off', l: 'Interview to offer %', d: '25' }, { k: 'acc', l: 'Offer acceptance %', d: '80' }, { k: 'days', l: 'Days per stage', d: '6' }, { k: 'cost', l: 'Total recruiting cost', d: '24000' }],
+  v => {
+    const a = N(v.app), s = a * N(v.scr) / 100, i = s * N(v.int) / 100, o = i * N(v.off) / 100, h = o * N(v.acc) / 100;
+    const stages = 5, tth = stages * N(v.days);
+    return kpi([['Hires', num(h, 1)], ['Overall conversion', a ? pct(h / a * 100, 2) : 'n/a'], ['Time to hire', num(tth) + ' days'], ['Cost per hire', h ? num(N(v.cost) / h) : 'n/a']]) +
+      tbl(['Stage', 'Count', 'Conversion', 'Lost'], [['Applicants', num(a), '', ''], ['Screened', num(s), pct(N(v.scr)), num(a - s)], ['Interviewed', num(i), pct(N(v.int)), num(s - i)], ['Offers', num(o), pct(N(v.off)), num(i - o)], ['Hires', num(h, 1), pct(N(v.acc)), num(o - h)]]) +
+      note('The weakest stage is where to invest. If acceptance is low, the problem is usually the offer or the process, not sourcing.');
+  });
+
+/* ---------------- data and technology ---------------- */
+const T = 'Data and technology';
+
+L.add(T, 'dq', 'Data quality scorecard', 'Weighted quality score across dimensions, with the weakest area and a grade.',
+  [{ k: 'v', l: 'One line per dimension: dimension|score 0-100|weight %', d: 'Completeness|92|25\nAccuracy|78|30\nTimeliness|85|20\nConsistency|70|15\nValidity|88|10', t: 't' }],
+  v => {
+    const r = rows(v.v).map(x => ({ n: x[0] || 'Dimension', s: clamp(N(x[1]), 0, 100), w: Math.max(0, N(x[2])) })).filter(x => x.n);
+    if (!r.length) return note('Add at least one dimension: dimension|score|weight.');
+    const tw = r.reduce((s, x) => s + x.w, 0) || 1, sc = r.reduce((s, x) => s + x.s * x.w, 0) / tw;
+    const worst = r.slice().sort((a, b) => a.s - b.s)[0];
+    const grade = sc >= 90 ? ['A', '#2e9d62'] : sc >= 80 ? ['B', '#2e6bd9'] : sc >= 70 ? ['C', '#d9922b'] : ['D', '#c9473d'];
+    return kpi([['Weighted score', num(sc, 1)], ['Grade', '<b style="color:' + grade[1] + '">' + grade[0] + '</b>'], ['Weakest', E(worst.n)], ['Dimensions', r.length]]) +
+      tbl(['Dimension', 'Score', 'Weight', 'Contribution', ''], r.map(x => [E(x.n), num(x.s), pct(x.w), num(x.s * x.w / tw, 1), bar(x.s, x.s < 70 ? '#c9473d' : x.s < 85 ? '#d9922b' : '#2e9d62')])) +
+      note('Do not report a single quality score without the dimensions behind it. The weakest dimension is the one that breaks decisions.');
+  });
+
+L.add(T, 'cloud', 'Cloud cost estimator', 'Monthly and annual run rate by resource, with the largest cost lines.',
+  [{ k: 'v', l: 'One line per resource: resource|quantity|unit cost per month|months', d: 'Compute|40|120|12\nStorage|50|8|12\nDatabase|4|600|12\nCDN|1|300|12', t: 't' }],
+  v => {
+    const r = rows(v.v).map(x => ({ n: x[0] || 'Resource', q: N(x[1]), c: N(x[2]), m: Math.max(1, N(x[3])) })).filter(x => x.n);
+    if (!r.length) return note('Add at least one resource: resource|quantity|unit cost|months.');
+    r.forEach(x => x.total = x.q * x.c * x.m);
+    const total = r.reduce((s, x) => s + x.total, 0), monthly = r.reduce((s, x) => s + x.q * x.c, 0);
+    return kpi([['Monthly run rate', num(monthly)], ['Annual run rate', num(monthly * 12)], ['Horizon cost', num(total)], ['Largest line', E(r.slice().sort((a, b) => b.total - a.total)[0].n)]]) +
+      tbl(['Resource', 'Quantity', 'Unit cost', 'Monthly', 'Horizon cost', 'Share'], r.map(x => [E(x.n), num(x.q), num(x.c, 2), num(x.q * x.c), num(x.total), pct(total ? x.total / total * 100 : 0)])) +
+      note('A 15% commitment discount on the top two lines would save ' + num(r.slice().sort((a, b) => b.total - a.total).slice(0, 2).reduce((s, x) => s + x.total, 0) * 0.15) + ' over the horizon.');
+  });
+
+L.add(T, 'techdebt', 'Technical debt prioritisation', 'Rank debt items by impact and risk against the effort to fix them.',
+  [{ k: 'v', l: 'One line per item: item|business impact 1-5|effort 1-5|risk 1-5', d: 'Legacy auth|5|3|5\nNo test coverage|4|4|4\nManual deploy|3|2|3\nOld reporting stack|4|5|2', t: 't' }],
+  v => {
+    const r = rows(v.v).map(x => { const i = clamp(N(x[1]), 1, 5), e = clamp(N(x[2]), 1, 5), k = clamp(N(x[3]), 1, 5); return { n: x[0] || 'Item', i, e, k, sc: i * k / e }; }).filter(x => x.n);
+    if (!r.length) return note('Add at least one item: item|impact|effort|risk.');
+    r.sort((a, b) => b.sc - a.sc);
+    const max = r[0].sc || 1;
+    return kpi([['Items', r.length], ['Top priority', E(r[0].n)], ['Score', num(r[0].sc, 1)], ['Quick wins', r.filter(x => x.e <= 2 && x.i >= 4).length]]) +
+      tbl(['Item', 'Impact', 'Effort', 'Risk', 'Score', 'Sequence', ''], r.map((x, i) => [E(x.n), x.i, x.e, x.k, num(x.sc, 1), i + 1, bar(x.sc / max * 100, '#7a5cd6')])) +
+      note('Score = impact x risk / effort. Quick wins are high impact with low effort; do those before the large re-platforming work.');
+  });
+
+L.add(T, 'cyberale', 'Cyber risk and annual loss expectancy', 'Single and annual loss expectancy per asset, and whether a control pays for itself.',
+  [{ k: 'v', l: 'One line per asset: asset|value|exposure factor %|annual rate of occurrence', d: 'Customer database|4000000|60|0.3\nFinance system|1500000|40|0.2\nWebsite|500000|25|1.5', t: 't' }, { k: 'ctrl', l: 'Annual cost of the proposed control', d: '250000' }, { k: 'red', l: 'Risk reduction from the control %', d: '50' }],
+  v => {
+    const r = rows(v.v).map(x => { const val = N(x[1]), ef = N(x[2]) / 100, aro = N(x[3]); return { n: x[0] || 'Asset', val, ef, aro, sle: val * ef, ale: val * ef * aro }; }).filter(x => x.n);
+    if (!r.length) return note('Add at least one asset: asset|value|exposure factor|annual rate.');
+    const total = r.reduce((s, x) => s + x.ale, 0), save = total * N(v.red) / 100, ctrl = N(v.ctrl), net = save - ctrl;
+    return kpi([['Total ALE', num(total)], ['Control benefit', num(save)], ['Control cost', num(ctrl)], ['Net benefit', num(net)], ['ROI', ctrl ? pct(net / ctrl * 100) : 'n/a']]) +
+      tbl(['Asset', 'Value', 'Exposure', 'ARO', 'SLE', 'ALE'], r.map(x => [E(x.n), num(x.val), pct(x.ef * 100), num(x.aro, 2), num(x.sle), num(x.ale)])) +
+      note(net > 0 ? 'The control is worth buying on these assumptions. Test the exposure factor and annual rate with your security team.' : 'The control does not pay for itself on these assumptions. Reduce scope or find a cheaper option.');
+  });
+
+L.add(T, 'aiusecase', 'AI use-case scoring', 'Score use cases on value, feasibility, data readiness and risk, then sequence them.',
+  [{ k: 'v', l: 'One line per use case: use case|value 1-5|feasibility 1-5|data readiness 1-5|risk 1-5', d: 'Support triage|5|4|4|2\nDemand forecast|4|3|2|2\nContract review|4|3|3|4', t: 't' }],
+  v => {
+    const r = rows(v.v).map(x => { const a = clamp(N(x[1]), 1, 5), b = clamp(N(x[2]), 1, 5), c = clamp(N(x[3]), 1, 5), d = clamp(N(x[4]), 1, 5); return { n: x[0] || 'Use case', a, b, c, d, sc: (a * 0.4 + b * 0.25 + c * 0.2) * (1 - (d - 1) * 0.12) }; }).filter(x => x.n);
+    if (!r.length) return note('Add at least one use case with four 1-5 scores.');
+    r.sort((a, b) => b.sc - a.sc);
+    const max = r[0].sc || 1;
+    const tier = x => x.sc >= 3.6 ? ['Do now', '#2e9d62'] : x.sc >= 2.6 ? ['Pilot', '#2e6bd9'] : x.sc >= 1.8 ? ['Prepare', '#d9922b'] : ['Defer', '#c9473d'];
+    return kpi([['Use cases', r.length], ['Do now', r.filter(x => x.sc >= 3.6).length], ['Top score', num(r[0].sc, 2)], ['Top case', E(r[0].n)]]) +
+      tbl(['Use case', 'Value', 'Feasibility', 'Data', 'Risk', 'Score', 'Tier', ''], r.map(x => { const t = tier(x); return [E(x.n), x.a, x.b, x.c, x.d, num(x.sc, 2), '<b style="color:' + t[1] + '">' + t[0] + '</b>', bar(x.sc / max * 100)]; })) +
+      note('Score = (value x 40% + feasibility x 25% + data x 20%) reduced by risk. A high-value case with weak data is a data project first.');
+  });
+
+L.add(T, 'downtime', 'Cost of downtime', 'Lost revenue, recovery cost and the annualised exposure for an outage.',
+  [{ k: 'rev', l: 'Revenue per hour', d: '250000' }, { k: 'aff', l: 'Share of revenue affected %', d: '60' }, { k: 'hours', l: 'Outage length (hours)', d: '4' }, { k: 'rec', l: 'Recovery and overtime cost', d: '30000' }, { k: 'freq', l: 'Expected outages per year', d: '3' }],
+  v => {
+    const rev = N(v.rev), aff = N(v.aff) / 100, h = N(v.hours), rec = N(v.rec), f = N(v.freq);
+    const lost = rev * aff * h, per = lost + rec;
+    return kpi([['Lost revenue', num(lost)], ['Recovery cost', num(rec)], ['Cost per outage', num(per)], ['Annual exposure', num(per * f)], ['Cost per minute', num(per / (h * 60))]]) +
+      tbl(['Item', 'Value'], [['Revenue at risk per hour', num(rev * aff)], ['Outage hours', num(h)], ['Per outage', num(per)], ['Outages per year', num(f)], ['Annualised', num(per * f)]]) +
+      note('Compare the annual exposure with the cost of resilience work. If the exposure is more than three times the fix, fund the fix.');
+  });
+})();
+
+
+/* Strategy Cascade Lab - strategy, ESG and planning tools */
+(() => {
+'use strict';
+const L = window.__lab; if (!L) return;
+const { E, N, num, pct, rows, tbl, kpi, bar, note, svg, ax, tx, clamp, col } = L;
+
+/* ---------------- strategy and portfolio ---------------- */
+const S = 'Strategy and portfolio';
+
+L.add(S, 'growthdecomp', 'Growth decomposition', 'Split revenue growth into volume, price and interaction effects.',
+  [{ k: 'p0', l: 'Prior price', d: '100' }, { k: 'u0', l: 'Prior units', d: '10000' }, { k: 'p1', l: 'Current price', d: '108' }, { k: 'u1', l: 'Current units', d: '11200' }],
+  v => {
+    const p0 = N(v.p0), u0 = N(v.u0), p1 = N(v.p1), u1 = N(v.u1);
+    const r0 = p0 * u0, r1 = p1 * u1, vol = (u1 - u0) * p0, price = (p1 - p0) * u0, inter = (p1 - p0) * (u1 - u0);
+    return kpi([['Prior revenue', num(r0)], ['Current revenue', num(r1)], ['Growth', r0 ? pct((r1 - r0) / r0 * 100) : 'n/a'], ['Volume effect', num(vol)], ['Price effect', num(price)]]) +
+      tbl(['Driver', 'Amount', 'Share of growth'], [['Volume', num(vol), (r1 - r0) ? pct(vol / (r1 - r0) * 100) : 'n/a'], ['Price', num(price), (r1 - r0) ? pct(price / (r1 - r0) * 100) : 'n/a'], ['Interaction', num(inter), (r1 - r0) ? pct(inter / (r1 - r0) * 100) : 'n/a'], ['<b>Total</b>', '<b>' + num(r1 - r0) + '</b>', '100%']]) +
+      note('If growth is mostly price, it is fragile and easy for a competitor to undercut. Volume-led growth is more durable.');
+  });
+
+L.add(S, 'share', 'Market share model', 'Your share, the change since the prior period, and the sales needed to hit a target.',
+  [{ k: 'sales', l: 'Your sales', d: '12000000' }, { k: 'market', l: 'Total market sales', d: '80000000' }, { k: 'prior', l: 'Your prior share %', d: '13' }, { k: 'target', l: 'Target share %', d: '18' }, { k: 'growth', l: 'Market growth %', d: '5' }],
+  v => {
+    const sales = N(v.sales), market = Math.max(1, N(v.market)), share = sales / market * 100, prior = N(v.prior), target = N(v.target) / 100;
+    const marketNext = market * (1 + N(v.growth) / 100), need = marketNext * target;
+    return kpi([['Current share', pct(share, 2)], ['Change', pct(share - prior, 2)], ['Target sales', num(need)], ['Sales gap', num(need - sales)]]) +
+      tbl(['Metric', 'Value'], [['Your sales', num(sales)], ['Market', num(market)], ['Share', pct(share, 2)], ['Prior share', pct(prior, 2)], ['Share gain needed', pct(target * 100 - share, 2)], ['Market next year', num(marketNext)]]) +
+      note('To reach ' + pct(target * 100) + ' you need ' + num(Math.max(0, need - sales)) + ' more sales, assuming the market grows ' + pct(N(v.growth)) + '.');
+  });
+
+L.add(S, 'position', 'Competitive positioning score', 'Weighted win/lose against a named competitor by criterion.',
+  [{ k: 'them', l: 'Competitor name', d: 'Main rival' }, { k: 'v', l: 'One line per criterion: criterion|weight %|us 1-10|them 1-10', d: 'Price|25|6|8\nQuality|30|9|6\nService|25|8|7\nBrand|20|7|9', t: 't' }],
+  v => {
+    const r = rows(v.v).map(x => ({ n: x[0] || 'Criterion', w: Math.max(0, N(x[1])), us: clamp(N(x[2]), 1, 10), th: clamp(N(x[3]), 1, 10) })).filter(x => x.n);
+    if (!r.length) return note('Add at least one criterion: criterion|weight|us|them.');
+    const tw = r.reduce((s, x) => s + x.w, 0) || 1;
+    const us = r.reduce((s, x) => s + x.us * x.w, 0) / tw, th = r.reduce((s, x) => s + x.th * x.w, 0) / tw;
+    const win = r.filter(x => x.us > x.th), lose = r.filter(x => x.us < x.th);
+    return kpi([['Our score', num(us, 2)], [E(v.them || 'Competitor'), num(th, 2)], ['Lead', num(us - th, 2)], ['We win on', win.length + ' of ' + r.length]]) +
+      tbl(['Criterion', 'Weight', 'Us', 'Them', 'Gap', 'Verdict'], r.map(x => [E(x.n), pct(x.w), num(x.us), num(x.th), '<span style="color:' + (x.us >= x.th ? '#2e9d62' : '#c9473d') + '">' + (x.us >= x.th ? '+' : '') + num(x.us - x.th) + '</span>', x.us > x.th ? 'Win' : x.us < x.th ? 'Lose' : 'Tie'])) +
+      note('We lose on ' + lose.length + ' criteria, weighted ' + pct(lose.reduce((s, x) => s + x.w, 0)) + '. Fix the highest-weight loss before spending on the rest.');
+  });
+
+L.add(S, 'gemck', 'GE-McKinsey portfolio', 'Place business units on a nine-box matrix and get the invest, select or harvest call.',
+  [{ k: 'v', l: 'One line per unit: unit|market attractiveness 1-5|competitive strength 1-5|sales', d: 'Core|4|5|40000000\nAdjacent|5|3|15000000\nLegacy|2|4|20000000\nNew|3|2|5000000', t: 't' }],
+  v => {
+    const r = rows(v.v).map(x => ({ n: x[0] || 'Unit', a: clamp(N(x[1]), 1, 5), s: clamp(N(x[2]), 1, 5), sales: N(x[3]) })).filter(x => x.n);
+    if (!r.length) return note('Add at least one unit: unit|attractiveness|strength|sales.');
+    const cell = x => x.a >= 4 && x.s >= 4 ? ['Invest and grow', '#2e9d62'] : x.a <= 2 && x.s <= 2 ? ['Divest', '#c9473d'] : (x.a >= 4 && x.s <= 2) || (x.a <= 2 && x.s >= 4) ? ['Selective', '#d9922b'] : ['Build selectively', '#2e6bd9'];
+    const W = 320, H = 300, pd = 38, X = s => pd + (W - 2 * pd) * (s - 1) / 4, Y = a => H - pd - (H - 2 * pd) * (a - 1) / 4;
+    let grid = '';
+    for (let i = 0; i < 3; i++) for (let j = 0; j < 3; j++) grid += '<rect x="' + (pd + (W - 2 * pd) * i / 3) + '" y="' + (pd + (H - 2 * pd) * j / 3) + '" width="' + ((W - 2 * pd) / 3) + '" height="' + ((H - 2 * pd) / 3) + '" fill="' + (i === 2 && j === 0 ? 'rgba(46,157,98,.10)' : i === 0 && j === 2 ? 'rgba(201,71,61,.10)' : 'transparent') + '" stroke="var(--line)"/>';
+    return kpi([['Units', r.length], ['Invest and grow', r.filter(x => cell(x)[0] === 'Invest and grow').length], ['Divest', r.filter(x => cell(x)[0] === 'Divest').length], ['Largest unit', E(r.slice().sort((a, b) => b.sales - a.sales)[0].n)]]) +
+      svg(W, H, grid + ax(pd, H - pd, W - pd, H - pd) + ax(pd, pd, pd, H - pd) + tx(W / 2, H - 8, 'competitive strength') + tx(10, 20, 'market attractiveness', 'start') + r.map(x => '<circle cx="' + X(x.s) + '" cy="' + Y(x.a) + '" r="6" fill="' + cell(x)[1] + '" fill-opacity=".8"/><text x="' + (X(x.s) + 9) + '" y="' + (Y(x.a) + 3) + '" font-size="8.5" fill="var(--ink)">' + E(x.n.slice(0, 14)) + '</text>').join('')) +
+      tbl(['Unit', 'Attractiveness', 'Strength', 'Sales', 'Call'], r.map(x => { const c = cell(x); return [E(x.n), x.a, x.s, num(x.sales), '<b style="color:' + c[1] + '">' + c[0] + '</b>']; })) +
+      note('Invest where both axes are strong. Selectively build in the middle. Divest where attractiveness and strength are both weak.');
+  });
+
+L.add(S, 'initscore', 'Strategic initiative scoring', 'Rank initiatives on impact, confidence, ease and cost, and show value per unit of cost.',
+  [{ k: 'v', l: 'One line per initiative: initiative|impact 1-5|confidence %|ease 1-5|cost', d: 'Pricing reset|5|70|4|200000\nNew segment|4|50|2|900000\nAutomation|3|80|3|300000', t: 't' }],
+  v => {
+    const r = rows(v.v).map(x => { const i = clamp(N(x[1]), 1, 5), c = clamp(N(x[2]), 0, 100), e = clamp(N(x[3]), 1, 5), cost = Math.max(1, N(x[4])); return { n: x[0] || 'Initiative', i, c, e, cost, sc: i * (c / 100) * (6 - e) / Math.log10(cost + 10) }; }).filter(x => x.n);
+    if (!r.length) return note('Add at least one initiative: initiative|impact|confidence|ease|cost.');
+    r.sort((a, b) => b.sc - a.sc);
+    const max = r[0].sc || 1;
+    return kpi([['Initiatives', r.length], ['Top priority', E(r[0].n)], ['Score', num(r[0].sc, 2)], ['Cheapest quick win', E(r.filter(x => x.e >= 4).sort((a, b) => a.cost - b.cost)[0] ? r.filter(x => x.e >= 4).sort((a, b) => a.cost - b.cost)[0].n : r[0].n)]]) +
+      tbl(['Initiative', 'Impact', 'Confidence', 'Ease', 'Cost', 'Score', ''], r.map(x => [E(x.n), x.i, pct(x.c), x.e, num(x.cost), num(x.sc, 2), bar(x.sc / max * 100, '#2e6bd9')])) +
+      note('Score = impact x confidence x ease, discounted by cost. High impact with low confidence is a hypothesis, not a plan.');
+  });
+
+L.add(S, 'maturity', 'Capability maturity assessment', 'Weighted current and target maturity and the size of the gap for each capability.',
+  [{ k: 'v', l: 'One line per capability: capability|current 1-5|target 1-5|weight %', d: 'Strategy|3|4|25\nData|2|4|25\nOperations|4|4|20\nPeople|3|4|15\nTechnology|2|4|15', t: 't' }],
+  v => {
+    const r = rows(v.v).map(x => ({ n: x[0] || 'Capability', cur: clamp(N(x[1]), 1, 5), tgt: clamp(N(x[2]), 1, 5), w: Math.max(0, N(x[3])) })).filter(x => x.n);
+    if (!r.length) return note('Add at least one capability: capability|current|target|weight.');
+    const tw = r.reduce((s, x) => s + x.w, 0) || 1;
+    const cur = r.reduce((s, x) => s + x.cur * x.w, 0) / tw, tgt = r.reduce((s, x) => s + x.tgt * x.w, 0) / tw;
+    r.forEach(x => x.gap = x.tgt - x.cur);
+    r.sort((a, b) => b.gap * b.w - a.gap * a.w);
+    return kpi([['Current maturity', num(cur, 2) + ' / 5'], ['Target maturity', num(tgt, 2) + ' / 5'], ['Gap', num(tgt - cur, 2)], ['Largest gap', E(r[0].n)]]) +
+      tbl(['Capability', 'Current', 'Target', 'Gap', 'Weight', 'Priority', ''], r.map(x => [E(x.n), num(x.cur, 1), num(x.tgt, 1), num(x.gap, 1), pct(x.w), num(x.gap * x.w / tw, 2), bar(x.cur * 20, x.cur <= 2 ? '#c9473d' : '#2e9d62')])) +
+      note('Sequence the largest weighted gaps first. Raising every capability at once is the most common way maturity programmes fail.');
+  });
+
+L.add(S, 'okralign', 'OKR alignment check', 'Progress, status and confidence for each key result, plus the objectives at risk.',
+  [{ k: 'v', l: 'One line per key result: objective|key result|target|current|confidence %', d: 'Grow revenue|New ARR|5000000|3200000|70\nGrow revenue|Win rate|30|24|60\nDelight customers|NPS|60|52|80\nRun efficiently|Cost per order|12|13.5|50', t: 't' }],
+  v => {
+    const r = rows(v.v).map(x => { const t = N(x[2]), c = N(x[3]); return { o: x[0] || 'Objective', n: x[1] || 'Key result', t, c, conf: clamp(N(x[4]), 0, 100), p: t ? c / t * 100 : 0 }; }).filter(x => x.n);
+    if (!r.length) return note('Add at least one key result: objective|key result|target|current|confidence.');
+    const objs = {}; r.forEach(x => { (objs[x.o] = objs[x.o] || []).push(x); });
+    const overall = r.reduce((s, x) => s + Math.min(100, x.p), 0) / r.length;
+    return kpi([['Key results', r.length], ['Overall progress', pct(overall)], ['At risk', r.filter(x => x.conf < 60 || x.p < 50).length], ['Objectives', Object.keys(objs).length]]) +
+      tbl(['Objective', 'Key result', 'Target', 'Current', 'Progress', 'Confidence', 'Status'], r.map(x => [E(x.o), E(x.n), num(x.t), num(x.c), pct(x.p), pct(x.conf), x.conf < 60 || x.p < 50 ? '<b style="color:#c9473d">At risk</b>' : x.p >= 100 ? '<b style="color:#2e9d62">Done</b>' : '<span style="color:#d9922b">On track</span>'])) +
+      note('Objectives: ' + Object.keys(objs).map(k => E(k) + ' ' + num(objs[k].reduce((s, x) => s + Math.min(100, x.p), 0) / objs[k].length, 0) + '%').join('; ') + '.');
+  }, {
+  pre: () => { const a = window.__app; if (!a) return null; const out = []; a.ALLC.forEach(c => { const d = a.getC(c.id); (d.kp || []).forEach(k => { if (String(k.k).trim() && String(k.t).trim()) out.push((c.short || c.title) + '|' + k.k + '|' + k.t + '|' + (k.b || '0') + '|' + (d.st === 3 ? 90 : 50)); }); }); return out.length ? { v: out.slice(0, 30).join('\n') } : null; },
+  push: v => { const list = rows(v.v).map(x => ({ k: x[1], b: x[3], t: x[2], h: 'Confidence ' + (x[4] || '') + '%' })).filter(x => String(x.k || '').trim()); return L.pushKpis(list); }
+});
+
+L.add(S, 'synergy', 'M&A synergy valuation', 'Present value of cost and revenue synergies against integration cost, with payback.',
+  [{ k: 'cost', l: 'Cost synergies per year', d: '8000000' }, { k: 'rev', l: 'Revenue synergies per year', d: '3000000' }, { k: 'integ', l: 'One-off integration cost', d: '12000000' }, { k: 'r', l: 'Discount rate %', d: '10' }, { k: 'y', l: 'Years of synergy', d: '5' }, { k: 'g', l: 'Terminal growth %', d: '2' }],
+  v => {
+    const s = N(v.cost) + N(v.rev), integ = N(v.integ), r = N(v.r) / 100, y = Math.max(1, N(v.y)), g = N(v.g) / 100;
+    let pv = 0, cum = -integ, pb = null;
+    for (let i = 1; i <= y; i++) { const disc = Math.pow(1 + r, i); pv += s / disc; cum += s; if (pb === null && cum >= 0) pb = i; }
+    const tv = r > g ? s * (1 + g) / (r - g) / Math.pow(1 + r, y) : 0;
+    const npv = pv + tv - integ;
+    return kpi([['Annual synergy', num(s)], ['PV of synergies', num(pv + tv)], ['Integration cost', num(integ)], ['Net value', num(npv)], ['Payback', pb ? pb + ' years' : 'not reached']]) +
+      tbl(['Component', 'Value'], [['Cost synergies', num(N(v.cost))], ['Revenue synergies', num(N(v.rev))], ['PV of explicit years', num(pv)], ['PV of terminal value', num(tv)], ['Less integration cost', '-' + num(integ)], ['<b>Net value</b>', '<b>' + num(npv) + '</b>']]) +
+      note(npv > 0 ? 'The deal creates value on these assumptions. Most synergies are overstated, so test a case at 50% of plan.' : 'The synergies do not cover the integration cost. Re-cut the price or the scope.');
+  });
+
+/* ---------------- ESG and impact ---------------- */
+const G = 'ESG and impact';
+
+L.add(G, 'carbon', 'Carbon footprint', 'Convert activity data into tonnes of CO2e and show the split by scope.',
+  [{ k: 'v', l: 'One line per source: source|scope (1/2/3)|quantity|emission factor kg CO2e per unit', d: 'Gas boilers|1|120000|0.18\nElectricity|2|800000|0.4\nBusiness travel|3|350000|0.15\nPurchased goods|3|900000|0.6', t: 't' }],
+  v => {
+    const r = rows(v.v).map(x => ({ n: x[0] || 'Source', sc: clamp(N(x[1]), 1, 3), q: N(x[2]), f: N(x[3]) })).filter(x => x.n);
+    if (!r.length) return note('Add at least one source: source|scope|quantity|factor.');
+    r.forEach(x => x.t = x.q * x.f / 1000);
+    const total = r.reduce((s, x) => s + x.t, 0);
+    const by = [1, 2, 3].map(s => r.filter(x => x.sc === s).reduce((a, x) => a + x.t, 0));
+    return kpi([['Total emissions', num(total, 1) + ' tCO2e'], ['Scope 1', num(by[0], 1)], ['Scope 2', num(by[1], 1)], ['Scope 3', num(by[2], 1)]]) +
+      tbl(['Source', 'Scope', 'Quantity', 'Factor', 'tCO2e', 'Share'], r.map(x => [E(x.n), x.sc, num(x.q), num(x.f, 2), num(x.t, 1), pct(total ? x.t / total * 100 : 0)])) +
+      note('Scope 3 is usually the largest and the hardest to measure. Use supplier-specific factors where you can, and state the method.');
+  });
+
+L.add(G, 'netzero', 'Net-zero pathway', 'Year-by-year emissions under a reduction rate, the year the target is met, and the residual to remove.',
+  [{ k: 'base', l: 'Baseline emissions (tCO2e)', d: '10000' }, { k: 'year', l: 'Baseline year', d: '2025' }, { k: 'target', l: 'Target year', d: '2040' }, { k: 'red', l: 'Annual reduction %', d: '8' }, { k: 'rem', l: 'Removals per year (tCO2e)', d: '500' }],
+  v => {
+    const base = N(v.base), y0 = N(v.year), yt = N(v.target), red = N(v.red) / 100, rem = N(v.rem);
+    const rs = []; let e = base, hit = null;
+    for (let y = y0; y <= Math.max(yt, y0 + 1); y++) {
+      if (y > y0) e = Math.max(0, e * (1 - red));
+      const net = Math.max(0, e - rem);
+      if (hit === null && net <= 0) hit = y;
+      rs.push([y, num(e, 1), num(rem), num(net, 1), net <= 0 ? '<b style="color:#2e9d62">Net zero</b>' : '']);
+    }
+    const atTarget = Math.max(0, e - rem);
+    return kpi([['Emissions at target year', num(atTarget, 1)], ['Reduction from base', base ? pct((base - atTarget) / base * 100) : 'n/a'], ['Net zero reached', hit || 'after ' + yt], ['Residual to remove', num(atTarget, 1)]]) +
+      tbl(['Year', 'Gross emissions', 'Removals', 'Net', 'Status'], rs) +
+      note(hit ? 'The pathway reaches net zero in ' + hit + '.' : 'The pathway does not reach net zero by ' + yt + '. Increase the reduction rate or buy more removals.');
+  });
+
+L.add(G, 'sroi', 'Social return on investment', 'Adjust outcome value for attribution and deadweight, then compare with the investment.',
+  [{ k: 'inv', l: 'Total investment', d: '500000' }, { k: 'v', l: 'One line per outcome: outcome|annual value|attribution %|deadweight %', d: 'Employment|800000|60|30\nHealth|300000|50|20\nSkills|200000|70|40', t: 't' }],
+  v => {
+    const inv = Math.max(1, N(v.inv));
+    const r = rows(v.v).map(x => { const val = N(x[1]), a = N(x[2]) / 100, d = N(x[3]) / 100; return { n: x[0] || 'Outcome', val, a, d, adj: val * a * (1 - d) }; }).filter(x => x.n);
+    if (!r.length) return note('Add at least one outcome: outcome|value|attribution|deadweight.');
+    const total = r.reduce((s, x) => s + x.adj, 0), ratio = total / inv;
+    return kpi([['Adjusted value', num(total)], ['Investment', num(inv)], ['SROI ratio', num(ratio, 2) + ' : 1'], ['Net value', num(total - inv)]]) +
+      tbl(['Outcome', 'Value', 'Attribution', 'Deadweight', 'Adjusted'], r.map(x => [E(x.n), num(x.val), pct(x.a * 100), pct(x.d * 100), num(x.adj)])) +
+      note('An SROI of ' + num(ratio, 2) + ' means each unit invested returns ' + num(ratio, 2) + ' in adjusted social value. Attribution and deadweight assumptions must be documented.');
+  });
+
+L.add(G, 'intensity', 'Energy and resource intensity', 'Normalise energy, water and waste by revenue and by unit of output, with a year-on-year comparison.',
+  [{ k: 'kwh', l: 'Energy use (kWh)', d: '4200000' }, { k: 'water', l: 'Water use (m3)', d: '18000' }, { k: 'waste', l: 'Waste (tonnes)', d: '900' }, { k: 'rev', l: 'Revenue', d: '24000000' }, { k: 'units', l: 'Units produced', d: '600000' }, { k: 'prev', l: 'Prior year revenue', d: '22000000' }, { k: 'prevkwh', l: 'Prior year energy (kWh)', d: '4400000' }],
+  v => {
+    const kwh = N(v.kwh), water = N(v.water), waste = N(v.waste), rev = Math.max(1, N(v.rev)), units = Math.max(1, N(v.units));
+    const ei = kwh / rev * 1000, wi = water / rev * 1000, ui = kwh / units, prev = N(v.prevkwh), prevRev = Math.max(1, N(v.prev));
+    const prevInt = prev / prevRev * 1000;
+    return kpi([['Energy per revenue', num(ei, 2) + ' kWh / 1k'], ['Energy per unit', num(ui, 3) + ' kWh'], ['Water per revenue', num(wi, 2) + ' m3 / 1k'], ['Waste per unit', num(waste / units * 1000, 2) + ' kg']]) +
+      tbl(['Metric', 'Value'], [['Energy intensity', num(ei, 2)], ['Prior energy intensity', num(prevInt, 2)], ['Change', prevInt ? pct((ei - prevInt) / prevInt * 100) : 'n/a'], ['Water intensity', num(wi, 2)], ['Waste intensity', num(waste / units * 1000, 2) + ' kg/unit'], ['Verdict', ei <= prevInt ? '<b style="color:#2e9d62">Improving</b>' : '<b style="color:#c9473d">Worsening</b>']]) +
+      note('Absolute emissions can rise while intensity falls if you grow. Report both so the picture is honest.');
+  });
+
+/* ---------------- planning and delivery ---------------- */
+const D = 'Planning and delivery';
+const scopeMax = s => /all/i.test(s || '') ? 999 : /1-5/.test(s || '') ? 5 : /1-2/.test(s || '') ? 2 : 1;
+const startDate = s => { const t = String(s || ''); return /^\d{4}-\d{2}-\d{2}$/.test(t) && isFinite(Date.parse(t)) ? t : L.today(); };
+const planScope = (v) => {
+  const a = window.__app; if (!a) return [];
+  const max = scopeMax(v && v.scope);
+  return a.ALLC.map(c => ({ c, d: a.getC(c.id) })).filter(x => x.d.st !== 3 && x.c.lv.n <= max);
+};
+
+L.add(D, 'plan90', '90-day plan generator', 'Build three 30-day sprints from the components in your workspace, ordered by status and due date.', [
+  { k: 'goal', l: 'Goal for the quarter', d: 'Move every critical component to approved' },
+  { k: 'scope', l: 'Scope', t: 's', o: ['Level 1 only', 'Levels 1-2', 'Levels 1-5', 'All levels'], d: 'Levels 1-2' },
+  { k: 'owner', l: 'Plan owner', d: '' },
+  { k: 'start', l: 'Start date', d: '' }
+], v => {
+    const a = window.__app;
+    if (!a) return note('Open the Lab inside the app so it can read your plan.');
+    const items = planScope(v);
+    if (!items.length) return note('Every component in this scope is approved. Widen the scope or set some back to in progress.');
+    items.sort((x, y) => (y.d.st === 4 ? 3 : y.d.st) - (x.d.st === 4 ? 3 : x.d.st) || String(x.d.due || '9999').localeCompare(String(y.d.due || '9999')));
+    const third = Math.ceil(items.length / 3);
+    const sprints = [items.slice(0, third), items.slice(third, third * 2), items.slice(third * 2)];
+    const s0 = startDate(v.start);
+    const add = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x.toISOString().slice(0, 10); };
+    const rs = [];
+    sprints.forEach((g, i) => g.forEach((x, j) => rs.push([i + 1, add(s0, i * 30) + ' to ' + add(s0, (i + 1) * 30 - 1), x.c.id, E(x.c.short || x.c.title), a.ST[x.d.st], x.d.owner || v.owner || 'Unassigned', j === 0 && i === 0 ? '<b>Start here</b>' : ''])));
+    return kpi([['Scope', E(v.scope || 'Level 1 only')], ['Open components', items.length], ['Sprints', 3], ['Blocked', items.filter(x => x.d.st === 4).length]]) +
+      tbl(['Sprint', 'Dates', 'ID', 'Component', 'Status', 'Owner', ''], rs) +
+      note('Sprints are ordered so blocked and in-progress work comes first. Confirm owners and dates in the room; this is a starting point, not a decision.');
+  }, {
+  pre: () => { const a = window.__app; if (!a) return null; const m = a.S && a.S.meta; return { owner: (m && m.owner) || '', goal: 'Approve every critical component in ' + ((m && m.company) || 'the plan') }; },
+  push: v => {
+    const a = window.__app; if (!a) return 0;
+    const items = planScope(v);
+    if (!items.length) return 0;
+    items.sort((x, y) => (y.d.st === 4 ? 3 : y.d.st) - (x.d.st === 4 ? 3 : x.d.st) || String(x.d.due || '9999').localeCompare(String(y.d.due || '9999')));
+    const third = Math.ceil(items.length / 3);
+    const groups = [items.slice(0, third), items.slice(third, third * 2), items.slice(third * 2)];
+    const s0 = startDate(v.start);
+    const add = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x.toISOString().slice(0, 10); };
+    let n = 0;
+    groups.forEach((g, i) => g.forEach(x => {
+      x.d.due = add(s0, (i + 1) * 30 - 1);
+      if (String(v.owner || '').trim()) x.d.owner = String(v.owner).trim();
+      a.touch('c:' + x.c.id); n++;
+    }));
+    a.render(); return n;
+  }
+});
+
+L.add(D, 'gantt', 'Milestone Gantt', 'Draw a timeline of tasks and milestones from start and end dates.',
+  [{ k: 'v', l: 'One line per task: task|start YYYY-MM-DD|end YYYY-MM-DD', d: 'Diagnose|2026-11-01|2026-11-14\nDesign|2026-11-10|2026-12-05\nBuild|2026-12-01|2027-01-20\nLaunch|2027-01-21|2027-01-28', t: 't' }],
+  v => {
+    const r = rows(v.v).map(x => ({ n: x[0] || 'Task', s: Date.parse(x[1]), e: Date.parse(x[2]) })).filter(x => x.n && isFinite(x.s) && isFinite(x.e) && x.e >= x.s);
+    if (!r.length) return note('Add at least one task: task|start date|end date.');
+    const min = Math.min(...r.map(x => x.s)), max = Math.max(...r.map(x => x.e)), span = Math.max(1, max - min);
+    const W = 460, H = 34 + r.length * 26, left = 100, right = W - 14;
+    const X = t => left + (right - left) * (t - min) / span;
+    return kpi([['Tasks', r.length], ['Start', new Date(min).toISOString().slice(0, 10)], ['End', new Date(max).toISOString().slice(0, 10)], ['Days', Math.ceil(span / 864e5)]]) +
+      svg(W, H, r.map((x, i) => { const y = 22 + i * 26; return '<text x="4" y="' + (y + 8) + '" font-size="8.5" fill="var(--ink)">' + E(x.n.slice(0, 16)) + '</text><rect x="' + X(x.s) + '" y="' + y + '" width="' + Math.max(2, X(x.e) - X(x.s)) + '" height="12" rx="3" fill="var(--l1)" fill-opacity=".8"/>'; }).join('') + ax(left, 10, left, H - 6) + tx(left, H - 2, new Date(min).toISOString().slice(0, 10), 'start') + tx(right, H - 2, new Date(max).toISOString().slice(0, 10), 'end')) +
+      tbl(['Task', 'Start', 'End', 'Days'], r.map(x => [E(x.n), new Date(x.s).toISOString().slice(0, 10), new Date(x.e).toISOString().slice(0, 10), Math.ceil((x.e - x.s) / 864e5)]));
+  }, {
+  pre: () => { const a = window.__app; if (!a) return null; const out = []; a.ALLC.forEach(c => { const d = a.getC(c.id); if (d.due && d.st !== 3) out.push((c.short || c.title) + '|' + L.today() + '|' + d.due); }); return out.length ? { v: out.slice(0, 20).join('\n') } : null; }
+});
+
+L.add(D, 'reshist', 'Resource histogram', 'Weekly allocation by person, with overloaded weeks and the peak.',
+  [{ k: 'v', l: 'One line per person: person|weekly allocation % comma separated', d: 'Ana|100,100,80,60\nBen|50,80,120,100\nChen|100,100,100,100', t: 't' }],
+  v => {
+    const r = rows(v.v).map(x => ({ n: x[0] || 'Person', a: String(x[1] || '').split(',').map(N) })).filter(x => x.n);
+    if (!r.length) return note('Add at least one person: person|allocation by week.');
+    const weeks = Math.max(...r.map(x => x.a.length));
+    const totals = Array.from({ length: weeks }, (_, i) => r.reduce((s, x) => s + (x.a[i] || 0), 0));
+    const peak = Math.max(...totals), W = 420, H = 180, pd = 28, max = Math.max(100, peak);
+    return kpi([['People', r.length], ['Weeks', weeks], ['Peak load', num(peak) + '%'], ['Overloaded weeks', totals.filter(x => x > 100 * r.length).length]]) +
+      svg(W, H, ax(pd, H - pd, W - pd, H - pd) + totals.map((t, i) => { const bw = (W - pd * 2) / weeks; const h = (H - pd - 12) * t / max; return '<rect x="' + (pd + i * bw + 3) + '" y="' + (H - pd - h) + '" width="' + (bw - 6) + '" height="' + h + '" rx="2" fill="' + (t > 100 * r.length ? '#c9473d' : '#2e6bd9') + '" fill-opacity=".8"/>' + tx(pd + i * bw + bw / 2, H - pd + 13, 'W' + (i + 1)); }).join('')) +
+      tbl(['Person', ...Array.from({ length: weeks }, (_, i) => 'W' + (i + 1)), 'Peak'], r.map(x => [E(x.n), ...x.a.map(v2 => v2 > 100 ? '<b style="color:#c9473d">' + v2 + '</b>' : num(v2)), num(Math.max(...x.a))])) +
+      note('A person above 100% in any week is over-allocated. Total capacity is ' + num(100 * r.length) + '% per week.');
+  }, {
+  pre: () => { const a = window.__app; if (!a) return null; const o = {}; a.ALLC.forEach(c => { const d = a.getC(c.id); if (d.owner && d.st !== 3) o[d.owner] = (o[d.owner] || 0) + 1; }); const out = Object.keys(o).map(k => k + '|' + Array.from({ length: 6 }, (_, i) => Math.min(100, o[k] * 20)).join(',')); return out.length ? { v: out.join('\n') } : null; }
+});
+
+L.add(D, 'decisionlog', 'Decision log rollup', 'Open decisions, ageing, owners and the count by status.',
+  [{ k: 'v', l: 'One line per decision: decision|date YYYY-MM-DD|owner|status (open/decided/deferred)|impact', d: 'Enter segment X|2026-09-01|CEO|open|High\nRebrand|2026-08-15|CMO|decided|Medium\nPrice rise|2026-10-01|CFO|open|High', t: 't' }],
+  v => {
+    const r = rows(v.v).map(x => ({ n: x[0] || 'Decision', d: x[1] || '', own: x[2] || '', st: (x[3] || 'open').toLowerCase(), imp: x[4] || '', age: L.days(x[1]) != null ? -L.days(x[1]) : null })).filter(x => x.n);
+    if (!r.length) return note('Add at least one decision: decision|date|owner|status|impact.');
+    const open = r.filter(x => x.st === 'open'), avg = open.length ? open.reduce((s, x) => s + (x.age || 0), 0) / open.length : 0;
+    return kpi([['Decisions', r.length], ['Open', open.length], ['Decided', r.filter(x => x.st === 'decided').length], ['Average age of open', num(avg) + ' days'], ['Oldest open', open.length ? E(open.slice().sort((a, b) => (b.age || 0) - (a.age || 0))[0].n) : '-']]) +
+      tbl(['Decision', 'Date', 'Owner', 'Status', 'Impact', 'Age'], r.map(x => [E(x.n), E(x.d), E(x.own), E(x.st), E(x.imp), x.age == null ? '-' : num(x.age) + ' days'])) +
+      note('An open decision older than 30 days is a governance problem, not a scheduling one. Escalate or close it.');
+  }, {
+  pre: () => { const a = window.__app; if (!a) return null; const out = []; a.ALLC.forEach(c => { const d = a.getC(c.id); if (d.st === 3) out.push((c.short || c.title) + '|' + (d.ad || d.due || L.today()) + '|' + (d.owner || '') + '|decided|Approved'); else if (d.st === 4) out.push((c.short || c.title) + '|' + (d.due || L.today()) + '|' + (d.owner || '') + '|open|Blocked'); }); return out.length ? { v: out.slice(0, 30).join('\n') } : null; },
+  push: v => { const list = rows(v.v).filter(x => String(x[3] || 'open').toLowerCase() === 'open').map(x => (x[0] || '') + ' - owner ' + (x[2] || 'unassigned') + ', open since ' + (x[1] || 'unknown') + ', impact ' + (x[4] || 'unrated')); return L.pushDecisions(list); }
+});
+
+L.add(D, 'cadence', 'Meeting cadence planner', 'Monthly hours and cost of the meeting calendar, and where to cut.',
+  [{ k: 'v', l: 'One line per meeting: meeting|frequency (weekly/fortnightly/monthly/quarterly)|minutes|attendees', d: 'Exec committee|weekly|90|8\nPortfolio review|fortnightly|120|14\nAll hands|monthly|60|200\nBoard|quarterly|240|10', t: 't' }, { k: 'rate', l: 'Fully loaded cost per hour per person', d: '85' }],
+  v => {
+    const per = f => /week/i.test(f) ? 52 / 12 : /fortnight/i.test(f) ? 26 / 12 : /quarter/i.test(f) ? 4 / 12 : /month/i.test(f) ? 1 : 1;
+    const r = rows(v.v).map(x => ({ n: x[0] || 'Meeting', f: x[1] || 'monthly', m: N(x[2]), a: N(x[3]), h: N(x[2]) / 60 * N(x[3]) * per(x[1] || 'monthly') })).filter(x => x.n);
+    if (!r.length) return note('Add at least one meeting: meeting|frequency|minutes|attendees.');
+    const hours = r.reduce((s, x) => s + x.h, 0), cost = hours * N(v.rate);
+    r.sort((a, b) => b.h - a.h);
+    return kpi([['Meetings', r.length], ['Person-hours / month', num(hours)], ['Cost / month', num(cost)], ['Cost / year', num(cost * 12)]]) +
+      tbl(['Meeting', 'Frequency', 'Minutes', 'Attendees', 'Hours / month', 'Cost / month'], r.map(x => [E(x.n), E(x.f), num(x.m), num(x.a), num(x.h, 1), num(x.h * N(v.rate))])) +
+      note('The largest meeting is ' + E(r[0].n) + '. Halving its length saves ' + num(r[0].h * N(v.rate) * 6) + ' a year.');
+  });
+
+L.add(D, 'benefits', 'Benefits realisation tracker', 'Compare realised benefits with target and value, and show the gap.',
+  [{ k: 'v', l: 'One line per benefit: benefit|baseline|target|current|annual value', d: 'Cost saving|0|2000000|1400000|2000000\nRevenue uplift|0|5000000|2100000|5000000\nChurn reduction|8|5|6.2|1200000', t: 't' }],
+  v => {
+    const r = rows(v.v).map(x => { const b = N(x[1]), t = N(x[2]), c = N(x[3]), val = N(x[4]); const prog = t !== b ? (c - b) / (t - b) * 100 : (c >= t ? 100 : 0); return { n: x[0] || 'Benefit', b, t, c, val, prog, realised: val * clamp(prog, 0, 150) / 100 }; }).filter(x => x.n);
+    if (!r.length) return note('Add at least one benefit: benefit|baseline|target|current|annual value.');
+    const target = r.reduce((s, x) => s + x.val, 0), got = r.reduce((s, x) => s + x.realised, 0);
+    return kpi([['Target value', num(target)], ['Realised value', num(got)], ['Realisation', target ? pct(got / target * 100) : 'n/a'], ['Gap', num(target - got)]]) +
+      tbl(['Benefit', 'Baseline', 'Target', 'Current', 'Progress', 'Value / year', 'Realised'], r.map(x => [E(x.n), num(x.b), num(x.t), num(x.c), pct(x.prog), num(x.val), num(x.realised)])) +
+      note('Progress is measured from baseline to target. A benefit at 120% is capped at its stated value; check the business case before claiming more.');
+  }, {
+  pre: () => { const a = window.__app; if (!a) return null; const out = []; a.ALLC.forEach(c => { const d = a.getC(c.id); (d.kp || []).forEach(k => { if (String(k.k).trim() && String(k.t).trim()) out.push(k.k + '|' + (k.b || '0') + '|' + k.t + '|' + (k.b || '0') + '|0'); }); }); return out.length ? { v: out.slice(0, 25).join('\n') } : null; },
+  push: v => { const list = rows(v.v).map(x => ({ k: x[0], b: x[1], t: x[2], h: 'Annual value ' + (x[4] || '0') })).filter(x => String(x.k || '').trim()); return L.pushKpis(list); }
+});
+})();
+
+
+/* Strategy Cascade Lab - styles, launcher and shortcuts */
+(() => {
+'use strict';
+const D = document, $ = s => D.querySelector(s), L = window.__lab;
+
+const css = `
+/* command palette: the markup existed but had no positioning or hidden state */
+#cp{position:fixed;inset:0;z-index:150;display:none;place-items:start center;padding:12vh 16px 16px;background:rgba(6,7,9,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+#cp.on{display:grid}
+#cp>div{width:min(680px,96vw)!important;max-height:70vh;overflow:auto;border:1px solid var(--line2);background:var(--surface);box-shadow:0 30px 80px -20px rgba(0,0,0,.7)}
+#cp input{width:100%!important;box-sizing:border-box}
+#cp a{display:flex;gap:12px;align-items:center;text-decoration:none;font-size:13.5px}
+#cp a.on{background:var(--surface2)!important}
+#cp .cpm{margin-left:auto;color:var(--muted);font-size:11px;white-space:nowrap}
+#cp .cph{padding:8px 16px 4px;font:600 10.5px var(--mono);text-transform:uppercase;letter-spacing:.09em;color:var(--muted)}
+/* lab */
+.labbox{width:min(1080px,97vw)!important}
+.labhead{display:flex;align-items:flex-end;gap:14px;justify-content:space-between;flex-wrap:wrap;padding-right:40px}
+.labhead h2{margin:2px 0 0}
+.labhead input{min-width:220px;flex:1;max-width:320px;padding:9px 12px;border:1px solid var(--line2);border-radius:9px;background:var(--surface2)}
+.labwrap{display:grid;grid-template-columns:250px minmax(0,1fr);gap:20px;margin-top:16px}
+.labside{max-height:64vh;overflow:auto;padding-right:6px;border-right:1px solid var(--line)}
+.labcat{font:600 10.5px var(--mono);text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin:12px 0 4px}
+.labcat:first-child{margin-top:0}
+.labitem{display:flex;gap:6px;align-items:center;width:100%;text-align:left;border:0;background:transparent;color:var(--ink);padding:7px 9px;border-radius:8px;cursor:pointer;font-size:13px;line-height:1.3}
+.labitem:hover{background:var(--surface2)}
+.labitem.on{background:var(--surface2);font-weight:600}
+.labstar{color:#d9922b;font-style:normal;font-size:11px}
+.labmain{min-width:0}
+.labtitle{display:flex;gap:12px;justify-content:space-between;align-items:flex-start}
+.labtitle h3{font-size:18px;margin:0 0 3px}
+.labtitle p{font-size:13px;max-width:70ch}
+.labfields{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin:14px 0}
+.labfields .lf{display:block;font-size:12px;color:var(--muted)}
+.labfields .lf span{display:block;margin-bottom:4px}
+.labfields input,.labfields select,.labfields textarea{width:100%;padding:8px 10px;border:1px solid var(--line2);border-radius:8px;background:var(--surface);color:var(--ink);font-size:13.5px}
+.labfields textarea{font-family:var(--mono);font-size:12.5px;min-height:74px;resize:vertical}
+.labfields .lf:has(textarea){grid-column:1/-1}
+.labfields .lfc{display:flex;align-items:center;gap:8px;color:var(--ink)}
+.labfields .lfc input{width:auto}
+.labtbl{overflow:auto;margin:10px 0;border:1px solid var(--line);border-radius:10px}
+.labtbl table{width:100%;border-collapse:collapse;font-size:13px}
+.labtbl th{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line2);font:600 10.5px var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted);white-space:nowrap}
+.labtbl td{padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+.labtbl tr:last-child td{border-bottom:0}
+.labtbl tbody tr:hover td{background:var(--surface2)}
+.labtbl tfoot td{font-weight:600;border-top:1px solid var(--line2)}
+.labbar{display:block;height:6px;border-radius:99px;background:var(--line);overflow:hidden;min-width:60px}
+.labbar i{display:block;height:100%;background:var(--l1)}
+.labkpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin:12px 0}
+.labkpi>div{background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:9px 11px}
+.labkpi b{display:block;font:700 17px/1.2 var(--display);letter-spacing:-.01em}
+.labkpi span{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.labnote{font-size:12px;color:var(--muted);margin-top:10px;max-width:80ch}
+.labacts{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px;align-items:center}
+.labsvg{width:100%;max-height:340px;margin:8px 0;border:1px solid var(--line);border-radius:10px;background:var(--surface2)}
+.labpush{max-width:340px;margin:10px 0}
+.labpush .lf{display:block;font-size:12px;color:var(--muted)}
+.labpush .lf span{display:block;margin-bottom:4px}
+.labpush select{width:100%;padding:8px 10px;border:1px solid var(--line2);border-radius:8px;background:var(--surface);color:var(--ink);font-size:13.5px}
+.labfav.on{background:var(--surface2);border-color:var(--line2)}
+/* native Lab page */
+.labpghead{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin:0 0 12px}
+.labpghead h2{font-size:15px;margin:0}
+.labpghead input{flex:1;min-width:220px;max-width:320px;padding:9px 12px;border:1px solid var(--line2);border-radius:9px;background:var(--surface2);color:var(--ink);font-size:13.5px}
+.labchips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+.labchips .chip{font-size:12px;padding:5px 11px}
+.labcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.labcard{display:flex;flex-direction:column;gap:6px;text-align:left;padding:14px 16px;cursor:pointer;color:var(--ink);font:inherit;transition:transform .15s,border-color .15s,background .15s}
+.labcard:hover{transform:translateY(-2px);border-color:var(--line2);background:var(--surface2)}
+.labcard h3{margin:0;font-size:14.5px;line-height:1.3}
+.labcard p{margin:0;font-size:12.5px;color:var(--muted);line-height:1.45}
+.labtag{font:500 10px var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.labmeta{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px}
+.labmeta em{font-style:normal;font-size:10.5px;padding:2px 7px;border-radius:999px;border:1px solid var(--line2);color:var(--muted)}
+@media(max-width:820px){.labwrap{grid-template-columns:1fr}.labside{max-height:180px;border-right:0;border-bottom:1px solid var(--line);padding-bottom:8px}}
+`;
+
+const st = D.createElement('style');
+st.textContent = css;
+D.head.appendChild(st);
+
+/* launcher button in the top bar */
+function launcher() {
+  const bar = D.querySelector('.top'); if (!bar || $('#labbtn')) return;
+  const anchor = $('#tkb') || $('#insb') || $('#askc');
+  const b = D.createElement('button');
+  b.className = 'ibtn'; b.id = 'labbtn'; b.title = 'Analysis Lab (Alt+L)';
+  b.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-9V3"/><path d="M7.5 15h9"/></svg><span>Lab</span>';
+  b.addEventListener('click', () => { const a = window.__app; if (a && a.go) a.go('lab'); else L.open(); });
+  if (anchor && anchor.parentNode) anchor.insertAdjacentElement('afterend', b);
+  else bar.appendChild(b);
+}
+launcher();
+new MutationObserver(launcher).observe(D.body, { childList: true, subtree: true });
+
+/* shortcuts */
+function shortcuts() {
+  let m = $('#sc-help');
+  if (m) { m.remove(); return; }
+  m = D.createElement('div'); m.id = 'sc-help'; m.className = 'pro-modal';
+  m.innerHTML = '<div class="pro-box"><button class="pro-x" aria-label="Close">x</button><h2>Keyboard shortcuts</h2>' +
+    '<div class="labtbl"><table><tbody>' +
+    [['Ctrl or Cmd + K', 'Search pages, levels, components and tools'], ['Alt + L', 'Open the Analysis Lab'], ['Alt + T', 'Open the finance toolkit'], ['Alt + I', 'Open cascade insights'], ['Ctrl + B', 'Collapse or expand the sidebar'], ['?', 'Show this help'], ['Esc', 'Close any panel']].map(r => '<tr><td><kbd>' + r[0] + '</kbd></td><td>' + r[1] + '</td></tr>').join('') +
+    '</tbody></table></div><p class="labnote">Shortcuts work when the cursor is not inside a text field.</p></div>';
+  D.body.appendChild(m); requestAnimationFrame(() => m.classList.add('on'));
+  m.addEventListener('click', e => { if (e.target === m || e.target.closest('.pro-x')) m.remove(); });
+}
+D.addEventListener('keydown', e => {
+  const t = e.target;
+  if (t && /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)) return;
+  if (e.altKey && !e.ctrlKey && !e.metaKey) {
+    const k = e.key.toLowerCase();
+    if (k === 'l') { e.preventDefault(); const a = window.__app; if (a && a.go) a.go('lab'); else L.open(); }
+    else if (k === 't') { e.preventDefault(); const b = $('#tkb'); if (b) b.click(); }
+    else if (k === 'i') { e.preventDefault(); const b = $('#insb'); if (b) b.click(); }
+  }
+  if (e.key === '?' && !e.ctrlKey && !e.metaKey) { e.preventDefault(); shortcuts(); }
+});
+
+/* make the palette reachable from the sidebar's existing search affordances */
+const oldSearch = $('#searchbtn');
+if (oldSearch) oldSearch.setAttribute('title', 'Search everything (Ctrl+K)');
+
+/* tell the user once that the Lab is here */
+try {
+  if (!localStorage.getItem('sc-lab-seen')) {
+    localStorage.setItem('sc-lab-seen', '1');
+    setTimeout(() => { const b = $('#labbtn'); if (b) b.classList.add('pulse'); }, 1500);
+  }
+} catch (e) {}
+
+console.log('Strategy Cascade Lab ready:', L.order.length, 'tools');
+/* the page route may be in the URL before this bundle has defined vLab() */
+if ((location.hash || '').replace(/^#/, '') === 'lab' && window.__app && window.__app.render) window.__app.render();
+})();
+
+</script>
 </body>
 </html>
